@@ -53,32 +53,32 @@ function Products(props) {
   const [products, setProducts] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
-  React.useEffect(() => {
-    if (!fetched) {
-      // fetch from the api..
-      // set products when received
-      setLoading(true);
-      if (searchRef.current.value === "") {
-        console.log("fetching all products");
-        getAllProducts().then((products) => {
-          setProducts(products);
-          console.log(products);
-          setFetched(true);
-          setLoading(false);
-        });
-      } else {
-        // search by word
-        console.log("by word");
-        searchByWord(searchRef.current.value).then((products) => {
-          setProducts(products);
-          console.log(products);
-          setFetched(true);
-          setLoading(false);
-        });
-      }
-      // set once received
-    }
-  }, [fetched]);
+  // React.useEffect(() => {
+  //   if (!fetched) {
+  //     // fetch from the api..
+  //     // set products when received
+  //     setLoading(true);
+  //     if (searchRef.current.value === "") {
+  //       console.log("fetching all products");
+  //       getAllProducts().then((products) => {
+  //         setProducts(products);
+  //         console.log(products);
+  //         setFetched(true);
+  //         setLoading(false);
+  //       });
+  //     } else {
+  //       // search by word
+  //       console.log("by word");
+  //       searchByWord(searchRef.current.value).then((products) => {
+  //         setProducts(products);
+  //         console.log(products);
+  //         setFetched(true);
+  //         setLoading(false);
+  //       });
+  //     }
+  //     // set once received
+  //   }
+  // }, [fetched]);
 
   return (
     <>

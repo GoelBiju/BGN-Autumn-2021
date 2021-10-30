@@ -57,9 +57,9 @@ function AddProduct(props) {
 
   const [loading, setLoading] = React.useState(false);
 
-  React.useEffect(() => {
-    console.log("Current files: ", imageFile, modelFiles);
-  }, [imageFile, modelFiles]);
+  // React.useEffect(() => {
+  //   console.log("Current files: ", imageFile, modelFiles);
+  // }, [imageFile, modelFiles]);
 
   // Handle file change
   const handleFileChange = (event, type) => {
@@ -112,21 +112,21 @@ function AddProduct(props) {
     }
 
     // Send a POST fetch request with the data
-    fetch(
-      "https://us-central1-bgn-university-hack-rem-1010.cloudfunctions.net/app/api/products",
-      {
-        method: "POST",
-        body: productData,
-      }
-    )
-      .then(() => {
-        setLoading(false);
-        alert("Added product");
-      })
-      .catch(() => {
-        setLoading(false);
-        alert("An error occurred");
-      });
+    // fetch(
+    //   "https://us-central1-bgn-university-hack-rem-1010.cloudfunctions.net/app/api/products",
+    //   {
+    //     method: "POST",
+    //     body: productData,
+    //   }
+    // )
+    //   .then(() => {
+    //     setLoading(false);
+    //     alert("Added product");
+    //   })
+    //   .catch(() => {
+    //     setLoading(false);
+    //     alert("An error occurred");
+    //   });
   };
 
   return (

@@ -10,7 +10,7 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import PropTypes from "prop-types";
 import React from "react";
 import Logo from "../assets/logo512.png";
-import { getProduct } from "../services/searchQuery";
+// import { getProduct } from "../services/searchQuery";
 import "./ARView.css";
 import Map from "./Map";
 
@@ -90,18 +90,18 @@ function Product(props) {
     "https://cdn.discordapp.com/attachments/817730471173029889/818315139907452958/unknown.png",
   ];
 
-  React.useEffect(() => {
-    if (!fetched) {
-      // fetch from the api..
-      // set products when received
-      console.log("fetching product", id);
-      getProduct(id).then((data) => {
-        setProduct(data);
-        console.log(product);
-        setFetched(true);
-      });
-    }
-  }, [fetched, id, product]);
+  // React.useEffect(() => {
+  //   if (!fetched) {
+  //     // fetch from the api..
+  //     // set products when received
+  //     console.log("fetching product", id);
+  //     getProduct(id).then((data) => {
+  //       setProduct(data);
+  //       console.log(product);
+  //       setFetched(true);
+  //     });
+  //   }
+  // }, [fetched, id, product]);
 
   return (
     <div>
