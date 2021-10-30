@@ -113,21 +113,19 @@ function AddAnimal(props) {
 
     // TODO: Ensure POST request works...
     // Send a POST fetch request with the data
-    // fetch(
-    //   "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/products",
-    //   {
-    //     method: "POST",
-    //     body: productData,
-    //   }
-    // )
-    //   .then(() => {
-    //     setLoading(false);
-    //     alert("Added product");
-    //   })
-    //   .catch(() => {
-    //     setLoading(false);
-    //     alert("An error occurred");
-    //   });
+    // "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/products",
+    fetch("http://localhost:5001/bgn-hack21-7005/us-central1/app/api/animals", {
+      method: "POST",
+      body: productData,
+    })
+      .then(() => {
+        setLoading(false);
+        alert("Added animal");
+      })
+      .catch(() => {
+        setLoading(false);
+        alert("An error occurred");
+      });
   };
 
   return (

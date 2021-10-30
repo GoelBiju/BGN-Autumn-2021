@@ -97,114 +97,114 @@ app.use(fileParser);
 // });
 
 //FUNCTIONAL
-// app.post("/api/products", async (req, res) => {
-//   try {
-//     console.log("Hit endpoint");
-//     // Get the relevant information
-//     const name = req.body["name"];
-//     const description = req.body["description"];
-//     const price = Number(req.body["price"]);
-//     const quantity = Number(req.body["quantity"]);
-//     const productTags = req.body["tags"].split(",").map((i) => i.trim());
-
-//     // Check and the parse the files
-//     if (req.files.length > 0) {
-//       // Get the image
-//       const image = req.files.filter((f) => f.fieldname === "imageFile")[0];
-
-//       // Get models
-//       const glbModel = req.files.filter((f) => f.fieldname === "glbFile");
-//       const usdzModel = req.files.filter((f) => f.fieldname === "usdzFile");
-
-//       // Upload the image to storage.
-//       const imageUrl = await uploadFileToStorage(image);
-//       console.log("Result of image: ", imageUrl);
-
-//       // Upload the models.
-//       let glbLink = "";
-//       let usdzLink = "";
-//       if (glbModel.length > 0) {
-//         glbLink = await uploadFileToStorage(glbModel[0]);
-//       }
-
-//       if (usdzModel.length > 0) {
-//         usdzLink = await uploadFileToStorage(usdzModel[0]);
-//       }
-
-//       // Get image tags.
-//       if (imageUrl) {
-//         const imageTags = await getImageTags(imageUrl);
-
-//         if (imageTags) {
-//           // TODO: Add the product and return the added product information
-//           const docRef = db.collection("products").doc();
-
-//           // Get the combined tags from the cloud vision API and the product tags provided
-//           let combinedTags = arrayUnique(productTags.concat(imageTags));
-
-//           // Set the properties of the product
-//           await docRef.set({
-//             name,
-//             description,
-//             price,
-//             quantity,
-//             image_link: imageUrl,
-//             models: {
-//               glb_link: glbLink,
-//               usdz_link: usdzLink,
-//             },
-//             product_tags: combinedTags,
-//           });
-
-//           res.json({
-//             id: docRef.id,
-//             name,
-//             description,
-//             price,
-//             quantity,
-//             image_link: imageUrl,
-//             models: {
-//               glb_link: glbLink,
-//               usdz_link: usdzLink,
-//             },
-//             product_tags: combinedTags,
-//           });
-//         } else {
-//           res.status(500).send("Unable to get image tags");
-//         }
-//       } else {
-//         res.send("No image url provided");
-//       }
-//     } else {
-//       res.status(403).send("No image/model files received.");
-//     }
-//   } catch (error) {
-//     res.status(400).send(error.message);
-//   }
-// });
-
-//FUNCTIONAL
-app.post("/api/upload", async (req, res) => {
+app.post("/api/animals", async (req, res) => {
   try {
+    console.log("Hit endpoint");
+    // Get the relevant information
+    // const name = req.body["name"];
+    // const description = req.body["description"];
+    // const price = Number(req.body["price"]);
+    // const quantity = Number(req.body["quantity"]);
+    // const productTags = req.body["tags"].split(",").map((i) => i.trim());
+
+    // Check and the parse the files
     if (req.files.length > 0) {
-      const image = req.files[0]; //image should be the first file we send.
-      uploadFileToStorage(image).then((imageUrl) => {
-        getImageTags(imageUrl)
-          .then((tags) => {
-            object_tags = tags;
-            getProductIDs(object_tags)
-              .then((return_ids) => {
-                res.status(200).send(return_ids);
-              })
-              .catch((error) => res.status(400).send(error.message));
-          })
-          .catch((error) => res.status(500).send(error.message));
-      });
+      // Get the image
+      const image = req.files.filter((f) => f.fieldname === "imageFile")[0];
+
+      // // Get models
+      // const glbModel = req.files.filter((f) => f.fieldname === "glbFile");
+      // const usdzModel = req.files.filter((f) => f.fieldname === "usdzFile");
+
+      // Upload the image to storage.
+      const imageUrl = await uploadFileToStorage(image);
+      console.log("Result of image: ", imageUrl);
+
+      // // Upload the models.
+      // let glbLink = "";
+      // let usdzLink = "";
+      // if (glbModel.length > 0) {
+      //   glbLink = await uploadFileToStorage(glbModel[0]);
+      // }
+
+      // if (usdzModel.length > 0) {
+      //   usdzLink = await uploadFileToStorage(usdzModel[0]);
+      // }
+
+      // Get image tags.
+      if (imageUrl) {
+        const imageTags = await getImageTags(imageUrl);
+
+        if (imageTags) {
+          // TODO: Add the product and return the added product information
+          const docRef = db.collection("products").doc();
+
+          // Get the combined tags from the cloud vision API and the product tags provided
+          let combinedTags = arrayUnique(productTags.concat(imageTags));
+
+          // Set the properties of the product
+          await docRef.set({
+            // name,
+            // description,
+            // price,
+            // quantity,
+            image_link: imageUrl,
+            // models: {
+            //   glb_link: glbLink,
+            //   usdz_link: usdzLink,
+            // },
+            product_tags: combinedTags,
+          });
+
+          res.json({
+            id: docRef.id,
+            // name,
+            // description,
+            // price,
+            // quantity,
+            image_link: imageUrl,
+            // models: {
+            //   glb_link: glbLink,
+            //   usdz_link: usdzLink,
+            // },
+            product_tags: combinedTags,
+          });
+        } else {
+          res.status(500).send("Unable to get image tags");
+        }
+      } else {
+        res.send("No image url provided");
+      }
+    } else {
+      res.status(403).send("No image/model files received.");
     }
   } catch (error) {
     res.status(400).send(error.message);
   }
 });
+
+//FUNCTIONAL
+// app.post("/api/upload", async (req, res) => {
+//   try {
+//     if (req.files.length > 0) {
+//       const image = req.files[0]; //image should be the first file we send.
+//       uploadFileToStorage(image).then((imageUrl) => {
+//         getImageTags(imageUrl)
+//           .then((tags) => {
+//             object_tags = tags;
+//             getProductIDs(object_tags)
+//               .then((return_ids) => {
+//                 res.status(200).send(return_ids);
+//               })
+//               .catch((error) => res.status(400).send(error.message));
+//           })
+//           .catch((error) => res.status(500).send(error.message));
+//       });
+//     }
+//   } catch (error) {
+//     res.status(400).send(error.message);
+//   }
+// });
 
 // //FUNCTIONAL
 // app.get("/api/search/:query", async (req, res) => {
