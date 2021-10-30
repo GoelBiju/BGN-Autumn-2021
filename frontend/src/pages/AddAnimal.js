@@ -113,11 +113,15 @@ function AddAnimal(props) {
 
     // TODO: Ensure POST request works...
     // Send a POST fetch request with the data
-    // "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/products",
-    fetch("http://localhost:5001/bgn-hack21-7005/us-central1/app/api/animals", {
-      method: "POST",
-      body: productData,
-    })
+    // "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/animals",
+    // http://localhost:5001/bgn-hack21-7005/us-central1/app/api/animals
+    fetch(
+      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/animals",
+      {
+        method: "POST",
+        body: productData,
+      }
+    )
       .then(() => {
         setLoading(false);
         alert("Added animal");
