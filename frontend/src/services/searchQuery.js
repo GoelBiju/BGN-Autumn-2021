@@ -1,7 +1,7 @@
 export function searchByWord(word) {
   return new Promise((resolve, reject) => {
     let query =
-      "https://us-central1-bgn-university-hack-rem-1010.cloudfunctions.net/app/api/search/" +
+      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/search/" +
       word;
     console.log("Query", query);
     fetch(query, { method: "GET" })
@@ -18,7 +18,7 @@ export function searchByImage(file) {
     console.log("Image: ", file);
 
     let query =
-      "https://us-central1-bgn-university-hack-rem-1010.cloudfunctions.net/app/api/upload";
+      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/upload";
     console.log("Query", query);
     fetch(query, { method: "POST", body: formData })
       .then((documents) => documents.json().then((data) => resolve(data)))
@@ -29,7 +29,7 @@ export function searchByImage(file) {
 export function getAllProducts() {
   return new Promise((resolve, reject) => {
     let query =
-      "https://us-central1-bgn-university-hack-rem-1010.cloudfunctions.net/app/api/products";
+      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/products";
     console.log("Query", query);
     fetch(query, { method: "GET" })
       .then((documents) => documents.json().then((data) => resolve(data)))
@@ -40,7 +40,7 @@ export function getAllProducts() {
 export function getProduct(id) {
   return new Promise((resolve, reject) => {
     let query =
-      "https://us-central1-bgn-university-hack-rem-1010.cloudfunctions.net/app/api/products/" +
+      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/products/" +
       id;
     console.log("Query", query);
     fetch(query, { method: "GET" })

@@ -113,7 +113,7 @@ function AddProduct(props) {
 
     // Send a POST fetch request with the data
     // fetch(
-    //   "https://us-central1-bgn-university-hack-rem-1010.cloudfunctions.net/app/api/products",
+    //   "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/products",
     //   {
     //     method: "POST",
     //     body: productData,

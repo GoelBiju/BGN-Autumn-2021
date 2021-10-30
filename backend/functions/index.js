@@ -443,7 +443,7 @@ function getProductIDs(object_tags) {
 //   }
 // });
 
-app.get("/", async (req, res) => {
+app.get("/api/", async (req, res) => {
   res.send("Working");
 });
 
