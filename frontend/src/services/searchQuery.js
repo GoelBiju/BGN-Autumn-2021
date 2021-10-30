@@ -26,10 +26,10 @@ export function searchByImage(file) {
   });
 }
 
-export function getAllProducts() {
+export function getAllAnimals() {
   return new Promise((resolve, reject) => {
     let query =
-      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/products";
+      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/animals";
     console.log("Query", query);
     fetch(query, { method: "GET" })
       .then((documents) => documents.json().then((data) => resolve(data)))
@@ -37,10 +37,10 @@ export function getAllProducts() {
   });
 }
 
-export function getProduct(id) {
+export function getAnimal(id) {
   return new Promise((resolve, reject) => {
     let query =
-      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/products/" +
+      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/animals/" +
       id;
     console.log("Query", query);
     fetch(query, { method: "GET" })

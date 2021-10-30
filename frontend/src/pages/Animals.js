@@ -10,14 +10,14 @@ import PhotoAlbum from "@material-ui/icons/PhotoAlbum";
 import SearchIcon from "@material-ui/icons/Search";
 import PropTypes from "prop-types";
 import React from "react";
-import Logo from "../assets/logo512.png";
+// import Logo from "../assets/logo512.png";
 import {
-  getAllProducts,
+  getAllAnimals,
   searchByImage,
   searchByWord,
 } from "../services/searchQuery";
-import ProductCard from "./Card";
-import "./Products.css";
+import AnimalCard from "./Card";
+import "./Animals.css";
 import { useStyles } from "./Styles";
 
 function ElevationScroll(props) {
@@ -45,51 +45,51 @@ ElevationScroll.propTypes = {
   window: PropTypes.func,
 };
 
-function Products(props) {
+function Animals(props) {
   const classes = useStyles();
   const searchRef = React.useRef();
 
   const [fetched, setFetched] = React.useState(false);
-  const [products, setProducts] = React.useState([]);
+  const [animals, setAnimals] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   if (!fetched) {
-  //     // fetch from the api..
-  //     // set products when received
-  //     setLoading(true);
-  //     if (searchRef.current.value === "") {
-  //       console.log("fetching all products");
-  //       getAllProducts().then((products) => {
-  //         setProducts(products);
-  //         console.log(products);
-  //         setFetched(true);
-  //         setLoading(false);
-  //       });
-  //     } else {
-  //       // search by word
-  //       console.log("by word");
-  //       searchByWord(searchRef.current.value).then((products) => {
-  //         setProducts(products);
-  //         console.log(products);
-  //         setFetched(true);
-  //         setLoading(false);
-  //       });
-  //     }
-  //     // set once received
-  //   }
-  // }, [fetched]);
+  React.useEffect(() => {
+    if (!fetched) {
+      // fetch from the api..
+      // set animals when received
+      setLoading(true);
+      if (searchRef.current.value === "") {
+        console.log("fetching all animals");
+        getAllAnimals().then((animals) => {
+          console.log("Got animals:", animals);
+          setAnimals(animals);
+          setFetched(true);
+          setLoading(false);
+        });
+      } else {
+        // search by word
+        console.log("by word");
+        searchByWord(searchRef.current.value).then((animals) => {
+          setAnimals(animals);
+          console.log(animals);
+          setFetched(true);
+          setLoading(false);
+        });
+      }
+      // set once received
+    }
+  }, [fetched]);
 
   return (
     <>
       <ElevationScroll {...props}>
         <AppBar position="fixed" className="primary">
           <Toolbar>
-            <img
+            {/* <img
               src={Logo}
               alt="logo"
               style={{ maxHeight: "30px", paddingRight: "15px" }}
-            />
+            /> */}
             <Typography component="h3">Animal Explore</Typography>
           </Toolbar>
         </AppBar>
@@ -98,12 +98,12 @@ function Products(props) {
       <div className="decoration-div" style={{ marginBottom: "-80px" }}>
         <div className="inner-decoration">
           <p style={{ fontSize: "x-large" }}>
-            A virtual marketplace for everyone
+            Animal exploration through visual learning
           </p>
-          <p style={{ fontSize: "small" }}>
+          {/* <p style={{ fontSize: "small" }}>
             Connect with and support small businesses through our immersive
             shopping experience
-          </p>
+          </p> */}
           <br />
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -134,9 +134,9 @@ function Products(props) {
             type="file"
             onChange={(event) => {
               setLoading(true);
-              searchByImage(event.target.files[0]).then((products) => {
-                setProducts(products);
-                console.log(products);
+              searchByImage(event.target.files[0]).then((animals) => {
+                setAnimals(animals);
+                console.log(animals);
                 setLoading(false);
                 // setFetched(true);
               });
@@ -169,7 +169,7 @@ function Products(props) {
               window.location = link;
             }}
           >
-            Add your own product
+            Add your animal
           </Button>
           <br />
           <br />
@@ -185,15 +185,15 @@ function Products(props) {
         </div>
       </div>
       <div style={{ flexGrow: 1, overflow: "hidden", paddingTop: "10px" }}>
-        <Grid container spacing={3} className="products-list">
-          {products.length > 0 &&
-            products.map((productData, index) => {
+        <Grid container spacing={3} className="animals-list">
+          {animals.length > 0 &&
+            animals.map((animalData, index) => {
               return (
                 <Grid item xs key={index}>
-                  <ProductCard
-                    product={productData.data}
-                    p_id={productData.id}
-                  ></ProductCard>
+                  <AnimalCard
+                    animal={animalData.data}
+                    p_id={animalData.id}
+                  ></AnimalCard>
                 </Grid>
               );
             })}
@@ -203,4 +203,4 @@ function Products(props) {
   );
 }
 
-export default Products;
+export default Animals;

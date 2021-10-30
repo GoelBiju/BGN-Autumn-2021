@@ -135,13 +135,13 @@ function AddAnimal(props) {
   return (
     <>
       <ElevationScroll {...props}>
-        <AppBar position="fixed" style={{ background: "#1976D2" }}>
+        <AppBar position="fixed" style={{ background: "#35d219" }}>
           <Toolbar>
-            <img
+            {/* <img
               src={Logo}
               alt="logo"
               style={{ maxHeight: "30px", paddingRight: "15px" }}
-            />
+            /> */}
             <Typography component="h3">Animal Explore</Typography>
           </Toolbar>
         </AppBar>

@@ -7,7 +7,7 @@ const fileParser = require("express-multipart-file-parser");
 
 // const { service } = require("firebase-functions/lib/providers/analytics");
 // const Product = require("./modules/product.js");
-// const Animal = require("./modules/animal.js");
+const Animal = require("./modules/animal.js");
 
 const { getImageTags } = require("./utils/cloud");
 
@@ -62,39 +62,39 @@ app.use(fileParser);
 // }
 
 //FUNCTIONAL
-// app.get("/api/products/:id", async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const product = await db.collection("products").doc(id);
-//     const data = await product.get();
-//     if (!data.exists) {
-//       res.status(404).send("No such product has been found");
-//     } else {
-//       res.send(data.data());
-//     }
-//   } catch (error) {
-//     res.status(400).send(error.message);
-//   }
-// });
+app.get("/api/animals/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const animal = await db.collection("animals").doc(id);
+    const data = await animal.get();
+    if (!data.exists) {
+      res.status(404).send("No such animal has been found");
+    } else {
+      res.send(data.data());
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 
 //FUNCTIONAL
-// app.get("/api/products", async (req, res) => {
-//   try {
-//     console.log("Fetching data");
-//     const products = await db.collection("products").get();
-//     const productsArray = [];
-//     if (products.empty) {
-//       res.status(404).send("No record found");
-//     } else {
-//       products.forEach((doc) => {
-//         productsArray.push({ id: doc.id, data: doc.data() });
-//       });
-//       res.send(productsArray);
-//     }
-//   } catch (error) {
-//     res.status(400).send(error.message);
-//   }
-// });
+app.get("/api/animals", async (req, res) => {
+  try {
+    console.log("Fetching data");
+    const animals = await db.collection("animals").get();
+    const animalsArray = [];
+    if (animals.empty) {
+      res.status(404).send("No record found");
+    } else {
+      animals.forEach((doc) => {
+        animalsArray.push({ id: doc.id, data: doc.data() });
+      });
+      res.send(animalsArray);
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 
 //FUNCTIONAL
 app.post("/api/animals", async (req, res) => {
@@ -136,11 +136,11 @@ app.post("/api/animals", async (req, res) => {
         const imageTags = await getImageTags(imageUrl);
 
         if (imageTags) {
-          // TODO: Add the product and return the added product information
-          const docRef = db.collection("products").doc();
+          // TODO: Add the animals and return the added product information
+          const docRef = db.collection("animals").doc();
 
           // Get the combined tags from the cloud vision API and the product tags provided
-          let combinedTags = arrayUnique(productTags.concat(imageTags));
+          // let combinedTags = arrayUnique(productTags.concat(imageTags));
 
           // Set the properties of the product
           await docRef.set({
@@ -153,7 +153,7 @@ app.post("/api/animals", async (req, res) => {
             //   glb_link: glbLink,
             //   usdz_link: usdzLink,
             // },
-            product_tags: combinedTags,
+            imageTags,
           });
 
           res.json({
@@ -167,7 +167,7 @@ app.post("/api/animals", async (req, res) => {
             //   glb_link: glbLink,
             //   usdz_link: usdzLink,
             // },
-            product_tags: combinedTags,
+            imageTags,
           });
         } else {
           res.status(500).send("Unable to get image tags");

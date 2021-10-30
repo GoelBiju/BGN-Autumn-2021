@@ -26,10 +26,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ProductCard(props) {
+function AnimalCard(props) {
   const classes = useStyles();
-  const product = props.product;
-  const names = ["Jaafar Rammal", "Jennifer Smith"];
+  const animal = props.animal;
+  // const names = ["Jaafar Rammal", "Jennifer Smith"];
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -38,9 +38,9 @@ function ProductCard(props) {
           color="textSecondary"
           gutterBottom
         >
-          {product.product_tags[0]}
+          {animal.imageTags[0]}
         </Typography>
-        <Typography variant="h5" component="h2">
+        {/* <Typography variant="h5" component="h2">
           {product.name}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
@@ -48,10 +48,10 @@ function ProductCard(props) {
         </Typography>
         <Typography variant="body2" component="p">
           {product.description}
-        </Typography>
+        </Typography> */}
         <div style={{ height: "200px", width: "100%", padding: "10px 0px" }}>
           <img
-            src={product.image_link}
+            src={animal.image_link}
             style={{ maxHeight: "150px", width: "100%", objectFit: "contain" }}
             alt="robot"
           ></img>
@@ -60,18 +60,18 @@ function ProductCard(props) {
       <CardActions>
         <Button
           component={RouterLink}
-          to={`/products/${props.p_id}`}
+          to={`/animals/${props.p_id}`}
           variant="contained"
           className="primary"
         >
           Explore
         </Button>
-        <div style={{ textAlign: "right", width: "40%" }}>
-          <h3>£{product.price}</h3>
-        </div>
+        {/* <div style={{ textAlign: "right", width: "40%" }}>
+          <h3>£{animal.price}</h3>
+        </div>*/}
       </CardActions>
     </Card>
   );
 }
 
-export default ProductCard;
+export default AnimalCard;

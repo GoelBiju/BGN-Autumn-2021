@@ -10,37 +10,37 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import PropTypes from "prop-types";
 import React from "react";
 import Logo from "../assets/logo512.png";
-// import { getProduct } from "../services/searchQuery";
+import { getAnimal } from "../services/searchQuery";
 import "./ARView.css";
 import Map from "./Map";
 
-const ARView = (props) => {
-  return (
-    <div className="imgbox">
-      <model-viewer
-        className="center-fit"
-        style={{ width: "80vw", height: "60vh", maxWidth: "500px" }}
-        src={props.glb}
-        alt="Astronaut - replace this with the releveant info"
-        auto-rotate
-        camera-controls
-        ar
-        ar-scale="auto"
-        ar-modes="webxr scene-viewer quick-look"
-        ios-src={props.usdz}
-        // TODO: Use the image of the product as the poster when the model is loading
-      >
-        <Button
-          className="secondary"
-          slot="ar-button"
-          style={{ position: "absolute", bottom: 0, left: 0 }}
-        >
-          View in AR
-        </Button>
-      </model-viewer>
-    </div>
-  );
-};
+// const ARView = (props) => {
+//   return (
+//     <div className="imgbox">
+//       <model-viewer
+//         className="center-fit"
+//         style={{ width: "80vw", height: "60vh", maxWidth: "500px" }}
+//         src={props.glb}
+//         alt="Astronaut - replace this with the releveant info"
+//         auto-rotate
+//         camera-controls
+//         ar
+//         ar-scale="auto"
+//         ar-modes="webxr scene-viewer quick-look"
+//         ios-src={props.usdz}
+//         // TODO: Use the image of the product as the poster when the model is loading
+//       >
+//         <Button
+//           className="secondary"
+//           slot="ar-button"
+//           style={{ position: "absolute", bottom: 0, left: 0 }}
+//         >
+//           View in AR
+//         </Button>
+//       </model-viewer>
+//     </div>
+//   );
+// };
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -73,10 +73,10 @@ const location = {
   lng: -0.12600320186901312,
 };
 
-function Product(props) {
-  const id = props.match.params.productId;
+function Animal(props) {
+  const id = props.match.params.animalId;
   const [fetched, setFetched] = React.useState(false);
-  const [product, setProduct] = React.useState({});
+  const [animal, setAnimal] = React.useState({});
 
   const names = ["Jaafar Rammal", "Jennifer Smith"];
 
@@ -90,30 +90,30 @@ function Product(props) {
     "https://cdn.discordapp.com/attachments/817730471173029889/818315139907452958/unknown.png",
   ];
 
-  // React.useEffect(() => {
-  //   if (!fetched) {
-  //     // fetch from the api..
-  //     // set products when received
-  //     console.log("fetching product", id);
-  //     getProduct(id).then((data) => {
-  //       setProduct(data);
-  //       console.log(product);
-  //       setFetched(true);
-  //     });
-  //   }
-  // }, [fetched, id, product]);
+  React.useEffect(() => {
+    if (!fetched) {
+      // fetch from the api..
+      // set products when received
+      console.log("fetching product", id);
+      getAnimal(id).then((data) => {
+        setAnimal(data);
+        console.log(animal);
+        setFetched(true);
+      });
+    }
+  }, [fetched, id, animal]);
 
   return (
     <div>
       {/* App bar */}
       <ElevationScroll {...props}>
-        <AppBar position="fixed" style={{ background: "#1976D2" }}>
+        <AppBar position="fixed" style={{ background: "#35d219" }}>
           <Toolbar>
-            <img
+            {/* <img
               src={Logo}
               alt="logo"
               style={{ maxHeight: "30px", paddingRight: "15px" }}
-            />
+            /> */}
             <Typography component="h3">Animal Explore</Typography>
           </Toolbar>
         </AppBar>
@@ -121,16 +121,16 @@ function Product(props) {
       {/* Main view view */}
       {fetched && (
         <div style={{ marginTop: "50px", padding: "80px 20px" }}>
-          {/* <p>Got product ID: {props.match.params.productId}</p> */}
+          <p>Got animal ID: {props.match.params.animalId}</p>
           <Grid container spacing={3}>
             {/* Product details */}
             <Grid item md>
               <Card className="details-wrapper">
                 <CardContent>
-                  <h1>Product details</h1>
+                  <h1>Animal details</h1>
                   <br />
-                  <h2>{product.name}</h2>
-                  <br />
+                  {/* <h2>{product.name}</h2>
+                   <br />
                   <p>{product.description}</p>
                   <br />
                   <p>
@@ -150,19 +150,19 @@ function Product(props) {
                   <br />
                   <p>
                     <b>Price: </b>£{product.price}
-                  </p>
+                  </p> */}
                   <br />
-                  <Button
+                  {/* <Button
                     className="primary"
                     onClick={() => alert("Added to cart!")}
                   >
                     Add to cart
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             </Grid>
             {/* AR view wrapper */}
-            <Grid item md>
+            {/* <Grid item md>
               <Card className="ar-wrapper">
                 <CardContent>
                   <h3>3D Viewer</h3>
@@ -172,12 +172,12 @@ function Product(props) {
                   />
                 </CardContent>
               </Card>
-            </Grid>
+            </Grid> */}
             {/* Map details */}
             <Grid item md>
               <Card className="details-wrapper ">
                 <CardContent>
-                  <h3>Seller story</h3>
+                  {/* <h3>Seller story</h3>
                   <br />
                   <div style={{ width: "100%", textAlign: "center" }}>
                     <img
@@ -198,7 +198,7 @@ function Product(props) {
                     {stories[product.quantity % 2]}
                   </div>
                   <br />
-                  <h3>Seller location</h3>
+                  <h3>Seller location</h3> */}
                   <br />
                   <Map location={location} zoomLevel={17} />
                   <Button
@@ -221,4 +221,4 @@ function Product(props) {
   );
 }
 
-export default Product;
+export default Animal;

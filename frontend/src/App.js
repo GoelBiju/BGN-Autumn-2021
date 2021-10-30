@@ -7,8 +7,8 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import AddAnimal from "./pages/AddAnimal";
-import Product from "./pages/Product";
-import Products from "./pages/Products";
+import Animal from "./pages/Animal";
+import Animals from "./pages/Animals";
 
 function App() {
   return (
@@ -17,11 +17,11 @@ function App() {
         <Route exact path="/add">
           <AddAnimal />
         </Route>
-        <Route exact path="/products">
-          <Products />
+        <Route exact path="/animals">
+          <Animals />
         </Route>
-        <Route exact path="/products/:productId" component={Product} />
-        <Route render={() => <Redirect to="/products" />} />
+        <Route exact path="/animals/:animalId" component={Animal} />
+        <Route render={() => <Redirect to="/animals" />} />
       </Switch>
     </Router>
   );
