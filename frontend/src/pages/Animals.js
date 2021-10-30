@@ -83,7 +83,7 @@ function Animals(props) {
   return (
     <>
       <ElevationScroll {...props}>
-        <AppBar position="fixed" className="primary">
+        <AppBar position="fixed" style={{ background: "#35d219" }}>
           <Toolbar>
             {/* <img
               src={Logo}
