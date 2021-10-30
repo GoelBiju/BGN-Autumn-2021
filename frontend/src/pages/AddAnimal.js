@@ -14,7 +14,7 @@ import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import PropTypes from "prop-types";
 import React from "react";
 import Logo from "../assets/logo512.png";
-import "./AddProduct.css";
+import "./AddAnimal.css";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -41,7 +41,7 @@ ElevationScroll.propTypes = {
   window: PropTypes.func,
 };
 
-function AddProduct(props) {
+function AddAnimal(props) {
   // Files to upload
   const [imageFile, setImageFile] = React.useState(null);
   const [modelFiles, setModelFiles] = React.useState({
@@ -87,30 +87,31 @@ function AddProduct(props) {
 
     // Create the form data and send it
     const productData = new FormData();
-    productData.append("name", nameRef.current.value);
-    productData.append("description", descriptionRef.current.value);
-    productData.append("price", priceRef.current.value);
-    productData.append("quantity", quantityRef.current.value);
-    productData.append("tags", tagsRef.current.value);
+    // productData.append("name", nameRef.current.value);
+    // productData.append("description", descriptionRef.current.value);
+    // productData.append("price", priceRef.current.value);
+    // productData.append("quantity", quantityRef.current.value);
+    // productData.append("tags", tagsRef.current.value);
 
     // Display the key/value pairs
-    for (var pair of productData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    // for (var pair of productData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
 
     // Append the files
     if (imageFile) {
       productData.append("imageFile", imageFile);
     }
 
-    if (modelFiles.glb) {
-      productData.append("glbFile", modelFiles.glb);
-    }
+    // if (modelFiles.glb) {
+    //   productData.append("glbFile", modelFiles.glb);
+    // }
 
-    if (modelFiles.usdz) {
-      productData.append("usdzFile", modelFiles.usdz);
-    }
+    // if (modelFiles.usdz) {
+    //   productData.append("usdzFile", modelFiles.usdz);
+    // }
 
+    // TODO: Ensure POST request works...
     // Send a POST fetch request with the data
     // fetch(
     //   "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/products",
@@ -139,7 +140,7 @@ function AddProduct(props) {
               alt="logo"
               style={{ maxHeight: "30px", paddingRight: "15px" }}
             />
-            <Typography component="h3">Google ARMarket</Typography>
+            <Typography component="h3">Animal Explore</Typography>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
@@ -148,7 +149,7 @@ function AddProduct(props) {
         style={{ textAlign: "center", marginBottom: "-250px" }}
       >
         <div className="inner-decoration">
-          <p style={{ fontSize: "x-large" }}>Add your product to the market!</p>
+          <p style={{ fontSize: "x-large" }}>Upload your animal!</p>
           <br />
           {loading && <CircularProgress style={{ color: "#1976d2" }} />}
         </div>
@@ -170,7 +171,7 @@ function AddProduct(props) {
           Add a product to your business:
         </Grid> */}
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 label="Product Name"
                 required
@@ -218,9 +219,9 @@ function AddProduct(props) {
                 variant="outlined"
                 inputRef={quantityRef}
               />
-            </Grid>
+            </Grid> */}
 
-            <Typography>
+            {/* <Typography>
               Enter tags for your product, separated with commas (i.e. chair,
               furniture):
             </Typography>
@@ -234,7 +235,7 @@ function AddProduct(props) {
                 variant="outlined"
                 inputRef={tagsRef}
               />
-            </Grid>
+            </Grid> */}
 
             <Typography>Upload an image of your product:</Typography>
             <Grid item xs={12}>
@@ -257,7 +258,7 @@ function AddProduct(props) {
               </label>
             </Grid>
 
-            <Typography>
+            {/* <Typography>
               Upload the .GLB/.USDZ 3D models for your product:
             </Typography>
             <Grid item xs={12}>
@@ -279,7 +280,7 @@ function AddProduct(props) {
                   Upload Models
                 </Button>
               </label>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <Button
@@ -299,4 +300,4 @@ function AddProduct(props) {
   );
 }
 
-export default AddProduct;
+export default AddAnimal;

@@ -90,7 +90,7 @@ function Products(props) {
               alt="logo"
               style={{ maxHeight: "30px", paddingRight: "15px" }}
             />
-            <Typography component="h3">Google ARMarket</Typography>
+            <Typography component="h3">Animal Explore</Typography>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
