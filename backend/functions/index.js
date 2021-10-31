@@ -114,7 +114,7 @@ app.post("/api/predict", async (req, res) => {
 
       // Get image tags.
       if (imageUrl) {
-        const imageTags = await getImageTags(imageUrl);
+        const taggedAnimals = await getImageTags(imageUrl);
 
         if (imageTags) {
           // Get the combined tags from the cloud vision API and the product tags provided
@@ -122,7 +122,7 @@ app.post("/api/predict", async (req, res) => {
 
           res.json({
             image_link: imageUrl,
-            imageTags,
+            animalName: taggedAnimals[0],
           });
         } else {
           res.status(500).send("Unable to get image tags");
@@ -168,6 +168,7 @@ app.post("/api/animals", async (req, res) => {
     // const productTags = req.body["tags"].split(",").map((i) => i.trim());
 
     const username = req.body["username"];
+    const animalName = req.body["animalName"];
 
     // Check and the parse the files
     if (req.files.length > 0) {

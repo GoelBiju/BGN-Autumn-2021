@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 
 // https://us-central1-bgn-hack21-7005.cloudfunctions.net/
 // http://localhost:5001/bgn-hack21-7005/us-central1/
-const API_BASE = "https://us-central1-bgn-hack21-7005.cloudfunctions.net/";
+const API_BASE = "https://us-central1-bgn-hack21-7005.cloudfunctions.net";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -51,10 +51,10 @@ function AddAnimal(props) {
   const [animalName, setAnimalName] = React.useState("");
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [imageFile, setImageFile] = React.useState(null);
-  const [modelFiles, setModelFiles] = React.useState({
-    glb: null,
-    usdz: null,
-  });
+  // const [modelFiles, setModelFiles] = React.useState({
+  //   glb: null,
+  //   usdz: null,
+  // });
 
   const userRef = React.useRef();
   const nameRef = React.useRef();
@@ -81,7 +81,7 @@ function AddAnimal(props) {
       const file = event.target.files[0];
       setImageFile(file);
       setSelectedFile(URL.createObjectURL(file));
-      setAnimalName(file);
+      // setAnimalName(file);
     }
   };
 
@@ -90,19 +90,20 @@ function AddAnimal(props) {
     setLoading(true);
 
     // Create the form data and send it
-    const productData = new FormData();
+    const animalData = new FormData();
     // Append the files
     if (imageFile) {
-      productData.append("imageFile", imageFile);
+      animalData.append("imageFile", imageFile);
     }
     // TODO: Ensure POST request works...
     // Send a POST fetch request with the data
     fetch(`${API_BASE}/app/api/predict`, {
       method: "POST",
-      body: productData,
+      body: animalData,
     })
       .then((res) => {
         console.log(res);
+        setAnimalName(res.imageTags[0]);
         setLoading(false);
         alert("Predicted animal");
       })
@@ -119,7 +120,8 @@ function AddAnimal(props) {
     // Create the form data and send it
     const animalData = new FormData();
     animalData.append("username", userRef.current.value);
-    animalData.append("animalName", nameRef.current.value); //TODO: Check this value in DB.
+    animalData.append("animalName", animalName); //TODO: Check this value in DB.
+
     // productData.append("description", descriptionRef.current.value);
     // productData.append("price", priceRef.current.value);
     // productData.append("quantity", quantityRef.current.value);
