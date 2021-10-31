@@ -57,24 +57,32 @@ function Animals(props) {
       // fetch from the api..
       // set animals when received
       setLoading(true);
-      if (searchRef.current.value === "") {
-        console.log("fetching all animals");
-        getAllAnimals().then((animals) => {
-          console.log("Got animals:", animals);
-          setAnimals(animals);
-          setFetched(true);
-          setLoading(false);
-        });
-      } else {
-        // search by word
-        console.log("by word");
-        searchByWord(searchRef.current.value).then((animals) => {
-          setAnimals(animals);
-          console.log(animals);
-          setFetched(true);
-          setLoading(false);
-        });
-      }
+      // if (searchRef.current.value === "") {
+      //   console.log("fetching all animals");
+      //   getAllAnimals().then((animals) => {
+      //     console.log("Got animals:", animals);
+      //     setAnimals(animals);
+      //     setFetched(true);
+      //     setLoading(false);
+      //   });
+      // } else {
+      //   // search by word
+      //   console.log("by word");
+      //   searchByWord(searchRef.current.value).then((animals) => {
+      //     setAnimals(animals);
+      //     console.log(animals);
+      //     setFetched(true);
+      //     setLoading(false);
+      //   });
+      // }
+
+      console.log("fetching all animals");
+      getAllAnimals().then((animals) => {
+        console.log("Got animals:", animals);
+        setAnimals(animals);
+        setFetched(true);
+        setLoading(false);
+      });
       // set once received
     }
   }, [fetched]);
@@ -97,14 +105,14 @@ function Animals(props) {
       <div className="decoration-div" style={{ marginBottom: "-80px" }}>
         <div className="inner-decoration">
           <p style={{ fontSize: "x-large" }}>
-            Animal exploration through visual learning
+            Help crowd-source animal species by exploring your surroundings!
           </p>
           {/* <p style={{ fontSize: "small" }}>
             Connect with and support small businesses through our immersive
             shopping experience
           </p> */}
           <br />
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -156,7 +164,7 @@ function Animals(props) {
             >
               Search by image
             </Button>
-          </label>
+          </label> */}
 
           <Button
             className="secondary"
