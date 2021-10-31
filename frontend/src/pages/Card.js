@@ -38,7 +38,7 @@ function AnimalCard(props) {
           color="textSecondary"
           gutterBottom
         >
-          {animal.imageTags[0]}
+          {animal.name}
         </Typography>
         {/* <Typography variant="h5" component="h2">
           {product.name}
@@ -51,7 +51,7 @@ function AnimalCard(props) {
         </Typography> */}
         <div style={{ height: "200px", width: "100%", padding: "10px 0px" }}>
           <img
-            src={animal.image_link}
+            src={animal.imageUrl}
             style={{ maxHeight: "150px", width: "100%", objectFit: "contain" }}
             alt="robot"
           ></img>

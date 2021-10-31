@@ -14,6 +14,7 @@ import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import BarChartIcon from '@material-ui/icons/BarChart';
 import PropTypes from "prop-types";
 import React from "react";
+import { Link } from "react-router-dom";
 import Logo from "../assets/logo512.png";
 import "./AddAnimal.css";
 
@@ -57,11 +58,13 @@ function AddAnimal(props) {
     usdz: null,
   });
 
+  const userRef = React.useRef();
   const nameRef = React.useRef();
   const locationRef = React.useRef();
-  const priceRef = React.useRef();
-  const quantityRef = React.useRef();
-  const tagsRef = React.useRef();
+  // const descriptionRef = React.useRef();
+  // const priceRef = React.useRef();
+  // const quantityRef = React.useRef();
+  // const tagsRef = React.useRef();
 
   const [loading, setLoading] = React.useState(false);
 
@@ -119,21 +122,22 @@ function AddAnimal(props) {
     setLoading(true);
 
     // Create the form data and send it
-    const productData = new FormData();
-    // productData.append("name", nameRef.current.value);
-    // productData.append("description", locationRef.current.value);
+    const animalData = new FormData();
+    animalData.append("username", userRef.current.value);
+    animalData.append("animalName", nameRef.current.value); //TODO: Check this value in DB. 
+    // productData.append("description", descriptionRef.current.value);
     // productData.append("price", priceRef.current.value);
     // productData.append("quantity", quantityRef.current.value);
     // productData.append("tags", tagsRef.current.value);
 
     // Display the key/value pairs
-    // for (var pair of productData.entries()) {
-    //   console.log(pair[0] + ", " + pair[1]);
-    // }
+    for (var pair of animalData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
 
     // Append the files
     if (imageFile) {
-      productData.append("imageFile", imageFile);
+      animalData.append("imageFile", imageFile);
     }
 
     // TODO: Ensure POST request works...
@@ -142,13 +146,17 @@ function AddAnimal(props) {
       `${API_BASE}/app/api/animals`,
       {
         method: "POST",
-        body: productData,
+        body: animalData,
       }
     )
       .then((res) => {
         console.log(res);
         setLoading(false);
         alert("Added animal");
+
+        const link = window.location.origin + "/";
+        console.log(link);
+        window.location = link;
       })
       .catch(() => {
         setLoading(false);
@@ -189,6 +197,19 @@ function AddAnimal(props) {
             alignItems="center"
             spacing={3}
           >
+            <Typography>Enter your username:</Typography>
+            <Grid item xs={12}>
+              <TextField
+                label="Username"
+                required
+                id="user-name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                inputRef={userRef}
+              />
+            </Grid>
+
             <Typography>Upload an image of your product:</Typography>
             <Grid item xs={12}>
               {!selectedFile && (
@@ -262,7 +283,7 @@ function AddAnimal(props) {
                 startIcon={<AddIcon />}
                 onClick={handleAdd}
               >
-                Add
+                Submit
               </Button>
             </Grid>
           </Grid>
