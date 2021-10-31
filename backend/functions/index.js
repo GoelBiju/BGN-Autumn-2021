@@ -11,6 +11,10 @@ const fileParser = require("express-multipart-file-parser");
 
 const { getImageTags } = require("./utils/cloud");
 
+// Import Tensorflow.js models
+const mobilenet = require("@tensorflow-models/mobilenet");
+console.log("MobileNet version:", mobilenet.version);
+
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   storageBucket: "bgn-hack21-7005.appspot.com", // Specify the storage bucket name
@@ -84,12 +88,68 @@ app.get("/api/animals", async (req, res) => {
     const animals = await db.collection("animals").get();
     const animalsArray = [];
     if (animals.empty) {
-      res.status(404).send("No record found");
+      res.status(404).send("No records found");
     } else {
       animals.forEach((doc) => {
         animalsArray.push({ id: doc.id, data: doc.data() });
       });
       res.send(animalsArray);
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+//FUNCTIONAL
+app.post("/api/predict", async (req, res) => {
+  try {
+    console.log("Hit endpoint");
+    // Check and the parse the files
+    if (req.files.length > 0) {
+      // Get the image
+      const image = req.files.filter((f) => f.fieldname === "imageFile")[0];
+      // Upload the image to storage.
+      const imageUrl = await uploadFileToStorage(image);
+      console.log("Result of image: ", imageUrl);
+
+      // Get image tags.
+      if (imageUrl) {
+        const taggedAnimals = await getImageTags(imageUrl);
+
+        if (imageTags) {
+          // Get the combined tags from the cloud vision API and the product tags provided
+          // let combinedTags = arrayUnique(productTags.concat(imageTags));
+
+          res.json({
+            image_link: imageUrl,
+            animalName: taggedAnimals[0],
+          });
+        } else {
+          res.status(500).send("Unable to get image tags");
+        }
+      } else {
+        res.send("No image url provided");
+      }
+    } else {
+      res.status(403).send("No image/model files received.");
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+app.get("/api/users", async (req, res) => {
+  try {
+    console.log("Fetching data");
+    const users = await db.collection("users").get();
+    const usersArray = [];
+    if (users.empty) {
+      res.status(404).send("No records found");
+    } else {
+      users.forEach((doc) => {
+        usersArray.push({ id: doc.id, data: doc.data() });
+      });
+      res.send(usersArray);
     }
   } catch (error) {
     res.status(400).send(error.message);
@@ -108,6 +168,7 @@ app.post("/api/animals", async (req, res) => {
     // const productTags = req.body["tags"].split(",").map((i) => i.trim());
 
     const username = req.body["username"];
+    const animalName = req.body["animalName"];
 
     // Check and the parse the files
     if (req.files.length > 0) {
@@ -186,7 +247,7 @@ app.post("/api/animals", async (req, res) => {
   }
 });
 
-//FUNCTIONAL
+// NOT FUNCTIONAL
 // app.post("/api/upload", async (req, res) => {
 //   try {
 //     if (req.files.length > 0) {
@@ -209,7 +270,7 @@ app.post("/api/animals", async (req, res) => {
 //   }
 // });
 
-// //FUNCTIONAL
+// // NOT FUNCTIONAL
 // app.get("/api/search/:query", async (req, res) => {
 //   try {
 //     query = req.params.query;
@@ -236,7 +297,7 @@ app.post("/api/animals", async (req, res) => {
 //   }
 // });
 
-// //FUNCTIONAL
+// // NOT FUNCTIONAL
 // app.delete("/api/products/:id", async (req, res) => {
 //   try {
 //     const id = req.params.id;
@@ -247,7 +308,7 @@ app.post("/api/animals", async (req, res) => {
 //   }
 // });
 
-// //FUNCTIONAL
+// // NOT FUNCTIONAL
 // app.post("/api/imgquery", async (req, res) => {
 //   try {
 //     const imgUrl = req.body["url"];
@@ -315,34 +376,34 @@ const uploadFileToStorage = (fileInfo) => {
   });
 };
 
-//FUNCTIONAL
-function getProductIDs(object_tags) {
-  return new Promise(function (resolve, reject) {
-    console.log("Checking tags: ", object_tags);
+// NOT FUNCTIONAL
+// function getProductIDs(object_tags) {
+//   return new Promise(function (resolve, reject) {
+//     console.log("Checking tags: ", object_tags);
 
-    product_ids = [];
+//     product_ids = [];
 
-    db.collection("products")
-      .get()
-      .then((products) => {
-        products.forEach((doc) => {
-          id = doc.id;
-          tags = doc.data().product_tags;
-          console.log(tags);
+//     db.collection("products")
+//       .get()
+//       .then((products) => {
+//         products.forEach((doc) => {
+//           id = doc.id;
+//           tags = doc.data().product_tags;
+//           console.log(tags);
 
-          ans = object_tags.some(function (e1) {
-            return tags.includes(e1);
-          });
-          if (ans) {
-            product_ids.push({ id: doc.id, data: doc.data() });
-          }
-        });
+//           ans = object_tags.some(function (e1) {
+//             return tags.includes(e1);
+//           });
+//           if (ans) {
+//             product_ids.push({ id: doc.id, data: doc.data() });
+//           }
+//         });
 
-        resolve(product_ids);
-      })
-      .catch((error) => reject(error));
-  });
-}
+//         resolve(product_ids);
+//       })
+//       .catch((error) => reject(error));
+//   });
+// }
 
 // // ----------------------- SELLER ----------------------------
 

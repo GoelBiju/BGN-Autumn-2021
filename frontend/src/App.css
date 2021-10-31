@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   color: black;
-  /* background-image: url("http://www.gstatic.com/pantheon/images/marketplace/storefront_header_bg_v6.jpg"); */
+  background-image: url("bg.jpg");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */

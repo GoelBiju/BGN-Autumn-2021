@@ -11,11 +11,15 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import AddIcon from "@material-ui/icons/Add";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import BarChartIcon from "@material-ui/icons/BarChart";
 import PropTypes from "prop-types";
 import React from "react";
-import { Link } from "react-router-dom";
-import Logo from "../assets/logo512.png";
 import "./AddAnimal.css";
+import { Link } from "react-router-dom";
+
+// https://us-central1-bgn-hack21-7005.cloudfunctions.net/
+// http://localhost:5001/bgn-hack21-7005/us-central1/
+const API_BASE = "https://us-central1-bgn-hack21-7005.cloudfunctions.net";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -44,13 +48,17 @@ ElevationScroll.propTypes = {
 
 function AddAnimal(props) {
   // Files to upload
+  const [animalName, setAnimalName] = React.useState("");
+  const [selectedFile, setSelectedFile] = React.useState(null);
   const [imageFile, setImageFile] = React.useState(null);
-  const [modelFiles, setModelFiles] = React.useState({
-    glb: null,
-    usdz: null,
-  });
+  // const [modelFiles, setModelFiles] = React.useState({
+  //   glb: null,
+  //   usdz: null,
+  // });
 
   const userRef = React.useRef();
+  const nameRef = React.useRef();
+  const locationRef = React.useRef();
   // const descriptionRef = React.useRef();
   // const priceRef = React.useRef();
   // const quantityRef = React.useRef();
@@ -64,22 +72,45 @@ function AddAnimal(props) {
 
   // Handle file change
   const handleFileChange = (event, type) => {
-    console.log(event, type);
+    console.log(event);
+    console.log(type);
     event.persist();
 
     // Add the files to the state
     if (type === "image") {
-      setImageFile(event.target.files[0]);
-    } else if (type === "models") {
-      Array.from(event.target.files).forEach((file) => {
-        if (file.name.endsWith(".glb")) {
-          console.log("Match");
-          setModelFiles((prev) => ({ ...prev, glb: file }));
-        } else if (file.name.endsWith(".usdz")) {
-          setModelFiles((prev) => ({ ...prev, usdz: file }));
-        }
-      });
+      const file = event.target.files[0];
+      setImageFile(file);
+      setSelectedFile(URL.createObjectURL(file));
+      // setAnimalName(file);
     }
+  };
+
+  const handlePredict = () => {
+    console.log("Add files");
+    setLoading(true);
+
+    // Create the form data and send it
+    const animalData = new FormData();
+    // Append the files
+    if (imageFile) {
+      animalData.append("imageFile", imageFile);
+    }
+    // TODO: Ensure POST request works...
+    // Send a POST fetch request with the data
+    fetch(`${API_BASE}/app/api/predict`, {
+      method: "POST",
+      body: animalData,
+    })
+      .then((res) => {
+        console.log(res);
+        setAnimalName(res.imageTags[0]);
+        setLoading(false);
+        alert("Predicted animal");
+      })
+      .catch(() => {
+        setLoading(false);
+        alert("An error occurred");
+      });
   };
 
   const handleAdd = () => {
@@ -89,6 +120,8 @@ function AddAnimal(props) {
     // Create the form data and send it
     const animalData = new FormData();
     animalData.append("username", userRef.current.value);
+    animalData.append("animalName", animalName); //TODO: Check this value in DB.
+
     // productData.append("description", descriptionRef.current.value);
     // productData.append("price", priceRef.current.value);
     // productData.append("quantity", quantityRef.current.value);
@@ -104,25 +137,14 @@ function AddAnimal(props) {
       animalData.append("imageFile", imageFile);
     }
 
-    // if (modelFiles.glb) {
-    //   productData.append("glbFile", modelFiles.glb);
-    // }
-
-    // if (modelFiles.usdz) {
-    //   productData.append("usdzFile", modelFiles.usdz);
-    // }
-
+    // TODO: Ensure POST request works...
     // Send a POST fetch request with the data
-    // "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/animals",
-    // http://localhost:5001/bgn-hack21-7005/us-central1/app/api/animals
-    fetch(
-      "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/animals",
-      {
-        method: "POST",
-        body: animalData,
-      }
-    )
-      .then(() => {
+    fetch(`${API_BASE}/app/api/animals`, {
+      method: "POST",
+      body: animalData,
+    })
+      .then((res) => {
+        console.log(res);
         setLoading(false);
         alert("Added animal");
 
@@ -146,7 +168,9 @@ function AddAnimal(props) {
               alt="logo"
               style={{ maxHeight: "30px", paddingRight: "15px" }}
             /> */}
-            <Typography component="h3">Animal Explore</Typography>
+            <Button component={Link} to="/">
+              Animal Explore
+            </Button>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
@@ -169,14 +193,6 @@ function AddAnimal(props) {
             alignItems="center"
             spacing={3}
           >
-            {/* <Grid item xs={12}>
-          <Typography variant="h3">Add Product</Typography>
-        </Grid>
-
-        <Grid item xs={12}>
-          Add a product to your business:
-        </Grid> */}
-
             <Typography>Enter your username:</Typography>
             <Grid item xs={12}>
               <TextField
@@ -190,103 +206,77 @@ function AddAnimal(props) {
               />
             </Grid>
 
-            {/* <Grid item xs={12}>
+            <Typography>Upload an image of your product:</Typography>
+            <Grid item xs={12}>
+              {!selectedFile && (
+                <>
+                  <input
+                    accept="image/*"
+                    id="image-file"
+                    type="file"
+                    onChange={(event) => handleFileChange(event, "image")}
+                    hidden
+                  />
+                  <label htmlFor="image-file">
+                    <Button
+                      variant="contained"
+                      className="primary"
+                      startIcon={<PhotoCamera />}
+                      component="span"
+                    >
+                      Upload Image
+                    </Button>
+                  </label>
+                </>
+              )}
+              {selectedFile && (
+                <>
+                  <img
+                    style={{
+                      maxWidth: "100%",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }}
+                    src={selectedFile}
+                  />
+                  <Button
+                    variant="outlined"
+                    className="primary"
+                    startIcon={<BarChartIcon />}
+                    component="span"
+                    onClick={handlePredict}
+                  >
+                    Classify
+                  </Button>
+                </>
+              )}
+            </Grid>
+
+            <Grid item xs={12}>
               <TextField
-                label="Product Description"
+                label="Animal Name"
                 required
-                id="product-description"
+                id="animal-name"
                 fullWidth
                 margin="normal"
                 variant="outlined"
-                inputRef={descriptionRef}
+                inputRef={nameRef}
+                value={animalName}
+                onChange={(event) => setAnimalName(event.target.value)}
               />
             </Grid>
 
             <Grid item xs={12}>
               <TextField
-                label="Price"
+                label="Animal Location"
                 required
-                id="product-price"
-                type="number"
+                id="animal-location"
                 fullWidth
                 margin="normal"
                 variant="outlined"
-                inputRef={priceRef}
+                inputRef={locationRef}
               />
             </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                label="Quantity"
-                required
-                id="product-quantity"
-                type="number"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                inputRef={quantityRef}
-              />
-            </Grid> */}
-
-            {/* <Typography>
-              Enter tags for your product, separated with commas (i.e. chair,
-              furniture):
-            </Typography>
-            <Grid item xs={12}>
-              <TextField
-                label="Product Tags"
-                required
-                id="product-tags"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                inputRef={tagsRef}
-              />
-            </Grid> */}
-            <Typography>Upload your animal discovery:</Typography>
-            <Grid item xs={12}>
-              <input
-                accept="image/*"
-                id="image-file"
-                type="file"
-                onChange={(event) => handleFileChange(event, "image")}
-                hidden
-              />
-              <label htmlFor="image-file">
-                <Button
-                  variant="contained"
-                  className="primary"
-                  startIcon={<PhotoCamera />}
-                  component="span"
-                >
-                  Upload Image
-                </Button>
-              </label>
-            </Grid>
-
-            {/* <Typography>
-              Upload the .GLB/.USDZ 3D models for your product:
-            </Typography>
-            <Grid item xs={12}>
-              <input
-                accept=".glb,.usdz"
-                id="model-file"
-                type="file"
-                multiple
-                onChange={(event) => handleFileChange(event, "models")}
-                hidden
-              />
-              <label htmlFor="model-file">
-                <Button
-                  variant="contained"
-                  className="primary"
-                  startIcon={<CloudUploadIcon />}
-                  component="span"
-                >
-                  Upload Models
-                </Button>
-              </label>
-            </Grid> */}
 
             <Grid item xs={12}>
               <Button

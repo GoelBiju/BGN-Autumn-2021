@@ -10,7 +10,6 @@ import PhotoAlbum from "@material-ui/icons/PhotoAlbum";
 import SearchIcon from "@material-ui/icons/Search";
 import PropTypes from "prop-types";
 import React from "react";
-// import Logo from "../assets/logo512.png";
 import {
   getAllAnimals,
   searchByImage,
@@ -19,6 +18,7 @@ import {
 import AnimalCard from "./Card";
 import "./Animals.css";
 import { useStyles } from "./Styles";
+import { Link } from "react-router-dom";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -47,7 +47,7 @@ ElevationScroll.propTypes = {
 
 function Animals(props) {
   const classes = useStyles();
-  const searchRef = React.useRef();
+  // const searchRef = React.useRef();
 
   const [fetched, setFetched] = React.useState(false);
   const [animals, setAnimals] = React.useState([]);
@@ -58,24 +58,32 @@ function Animals(props) {
       // fetch from the api..
       // set animals when received
       setLoading(true);
-      if (searchRef.current.value === "") {
-        console.log("fetching all animals");
-        getAllAnimals().then((animals) => {
-          console.log("Got animals:", animals);
-          setAnimals(animals);
-          setFetched(true);
-          setLoading(false);
-        });
-      } else {
-        // search by word
-        console.log("by word");
-        searchByWord(searchRef.current.value).then((animals) => {
-          setAnimals(animals);
-          console.log(animals);
-          setFetched(true);
-          setLoading(false);
-        });
-      }
+      // if (searchRef.current.value === "") {
+      //   console.log("fetching all animals");
+      //   getAllAnimals().then((animals) => {
+      //     console.log("Got animals:", animals);
+      //     setAnimals(animals);
+      //     setFetched(true);
+      //     setLoading(false);
+      //   });
+      // } else {
+      //   // search by word
+      //   console.log("by word");
+      //   searchByWord(searchRef.current.value).then((animals) => {
+      //     setAnimals(animals);
+      //     console.log(animals);
+      //     setFetched(true);
+      //     setLoading(false);
+      //   });
+      // }
+
+      console.log("fetching all animals");
+      getAllAnimals().then((animals) => {
+        console.log("Got animals:", animals);
+        setAnimals(animals);
+        setFetched(true);
+        setLoading(false);
+      });
       // set once received
     }
   }, [fetched]);
@@ -86,7 +94,6 @@ function Animals(props) {
         <AppBar position="fixed" style={{ background: "#35d219" }}>
           <Toolbar>
             <Typography component="h3">Animal Explore</Typography>
-            
             <div>
               <Button
               className="primary"
@@ -102,6 +109,15 @@ function Animals(props) {
               </Button>
             </div>
 
+=======
+            {/* <img
+              src={Logo}
+              alt="logo"
+              style={{ maxHeight: "30px", paddingRight: "15px" }}
+            /> */}
+            <Button component={Link} to="/">
+              Animal Explore
+            </Button>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
@@ -109,14 +125,14 @@ function Animals(props) {
       <div className="decoration-div" style={{ marginBottom: "-80px" }}>
         <div className="inner-decoration">
           <p style={{ fontSize: "x-large" }}>
-            Animal exploration through visual learning
+            Help crowd-source animal species by exploring your surroundings!
           </p>
           {/* <p style={{ fontSize: "small" }}>
             Connect with and support small businesses through our immersive
             shopping experience
           </p> */}
           <br />
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -168,7 +184,7 @@ function Animals(props) {
             >
               Search by image
             </Button>
-          </label>
+          </label> */}
 
           <Button
             className="secondary"
