@@ -97,6 +97,45 @@ app.get("/api/animals", async (req, res) => {
 });
 
 //FUNCTIONAL
+app.post("/api/predict", async (req, res) => {
+  try {
+    console.log("Hit endpoint");
+    // Check and the parse the files
+    if (req.files.length > 0) {
+      // Get the image
+      const image = req.files.filter((f) => f.fieldname === "imageFile")[0];
+      // Upload the image to storage.
+      const imageUrl = await uploadFileToStorage(image);
+      console.log("Result of image: ", imageUrl);
+
+      // Get image tags.
+      if (imageUrl) {
+        const imageTags = await getImageTags(imageUrl);
+
+        if (imageTags) {
+          // Get the combined tags from the cloud vision API and the product tags provided
+          // let combinedTags = arrayUnique(productTags.concat(imageTags));
+
+          res.json({
+            image_link: imageUrl,
+            imageTags,
+          });
+        } else {
+          res.status(500).send("Unable to get image tags");
+        }
+      } else {
+        res.send("No image url provided");
+      }
+    } else {
+      res.status(403).send("No image/model files received.");
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+
+//FUNCTIONAL
 app.post("/api/animals", async (req, res) => {
   try {
     console.log("Hit endpoint");
