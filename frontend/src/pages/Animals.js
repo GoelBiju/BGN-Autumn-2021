@@ -85,12 +85,23 @@ function Animals(props) {
       <ElevationScroll {...props}>
         <AppBar position="fixed" style={{ background: "#35d219" }}>
           <Toolbar>
-            {/* <img
-              src={Logo}
-              alt="logo"
-              style={{ maxHeight: "30px", paddingRight: "15px" }}
-            /> */}
             <Typography component="h3">Animal Explore</Typography>
+            
+            <div>
+              <Button
+              className="primary"
+              variant="contained"
+              style={{ marginBottom: "13px", padding: "6px 16px" }}
+              onClick={() => {
+                const link = window.location.origin + "/leadership";
+                console.log(link);
+                window.location = link;
+              }}
+              >
+              Leadership Board
+              </Button>
+            </div>
+
           </Toolbar>
         </AppBar>
       </ElevationScroll>

@@ -9,11 +9,15 @@ import "./App.css";
 import AddAnimal from "./pages/AddAnimal";
 import Animal from "./pages/Animal";
 import Animals from "./pages/Animals";
+import Leadership from "./pages/Leadership";
 
 function App() {
   return (
     <Router>
       <Switch>
+        <Route exact path="/leadership">
+          <Leadership />
+        </Route>
         <Route exact path="/add">
           <AddAnimal />
         </Route>
