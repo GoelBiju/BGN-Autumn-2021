@@ -13,6 +13,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import PropTypes from "prop-types";
 import React from "react";
+import { Link } from "react-router-dom";
 import Logo from "../assets/logo512.png";
 import "./AddAnimal.css";
 
@@ -49,11 +50,11 @@ function AddAnimal(props) {
     usdz: null,
   });
 
-  const nameRef = React.useRef();
-  const descriptionRef = React.useRef();
-  const priceRef = React.useRef();
-  const quantityRef = React.useRef();
-  const tagsRef = React.useRef();
+  const userRef = React.useRef();
+  // const descriptionRef = React.useRef();
+  // const priceRef = React.useRef();
+  // const quantityRef = React.useRef();
+  // const tagsRef = React.useRef();
 
   const [loading, setLoading] = React.useState(false);
 
@@ -86,21 +87,21 @@ function AddAnimal(props) {
     setLoading(true);
 
     // Create the form data and send it
-    const productData = new FormData();
-    // productData.append("name", nameRef.current.value);
+    const animalData = new FormData();
+    animalData.append("username", userRef.current.value);
     // productData.append("description", descriptionRef.current.value);
     // productData.append("price", priceRef.current.value);
     // productData.append("quantity", quantityRef.current.value);
     // productData.append("tags", tagsRef.current.value);
 
     // Display the key/value pairs
-    // for (var pair of productData.entries()) {
-    //   console.log(pair[0] + ", " + pair[1]);
-    // }
+    for (var pair of animalData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
 
     // Append the files
     if (imageFile) {
-      productData.append("imageFile", imageFile);
+      animalData.append("imageFile", imageFile);
     }
 
     // if (modelFiles.glb) {
@@ -111,7 +112,6 @@ function AddAnimal(props) {
     //   productData.append("usdzFile", modelFiles.usdz);
     // }
 
-    // TODO: Ensure POST request works...
     // Send a POST fetch request with the data
     // "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/animals",
     // http://localhost:5001/bgn-hack21-7005/us-central1/app/api/animals
@@ -119,12 +119,16 @@ function AddAnimal(props) {
       "https://us-central1-bgn-hack21-7005.cloudfunctions.net/app/api/animals",
       {
         method: "POST",
-        body: productData,
+        body: animalData,
       }
     )
       .then(() => {
         setLoading(false);
         alert("Added animal");
+
+        const link = window.location.origin + "/";
+        console.log(link);
+        window.location = link;
       })
       .catch(() => {
         setLoading(false);
@@ -173,19 +177,20 @@ function AddAnimal(props) {
           Add a product to your business:
         </Grid> */}
 
-            {/* <Grid item xs={12}>
+            <Typography>Enter your username:</Typography>
+            <Grid item xs={12}>
               <TextField
-                label="Product Name"
+                label="Username"
                 required
-                id="product-name"
+                id="user-name"
                 fullWidth
                 margin="normal"
                 variant="outlined"
-                inputRef={nameRef}
+                inputRef={userRef}
               />
             </Grid>
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 label="Product Description"
                 required
@@ -238,8 +243,7 @@ function AddAnimal(props) {
                 inputRef={tagsRef}
               />
             </Grid> */}
-
-            <Typography>Upload an image of your product:</Typography>
+            <Typography>Upload your animal discovery:</Typography>
             <Grid item xs={12}>
               <input
                 accept="image/*"
@@ -292,7 +296,7 @@ function AddAnimal(props) {
                 startIcon={<AddIcon />}
                 onClick={handleAdd}
               >
-                Add
+                Submit
               </Button>
             </Grid>
           </Grid>

@@ -7,7 +7,7 @@ const fileParser = require("express-multipart-file-parser");
 
 // const { service } = require("firebase-functions/lib/providers/analytics");
 // const Product = require("./modules/product.js");
-const Animal = require("./modules/animal.js");
+// const Animal = require("./modules/animal.js");
 
 const { getImageTags } = require("./utils/cloud");
 
@@ -107,6 +107,8 @@ app.post("/api/animals", async (req, res) => {
     // const quantity = Number(req.body["quantity"]);
     // const productTags = req.body["tags"].split(",").map((i) => i.trim());
 
+    const username = req.body["username"];
+
     // Check and the parse the files
     if (req.files.length > 0) {
       // Get the image
@@ -133,41 +135,42 @@ app.post("/api/animals", async (req, res) => {
 
       // Get image tags.
       if (imageUrl) {
-        const imageTags = await getImageTags(imageUrl);
+        const taggedAnimals = await getImageTags(imageUrl);
+        console.log("Tagged animals: ", taggedAnimals);
 
-        if (imageTags) {
+        if (taggedAnimals) {
           // TODO: Add the animals and return the added product information
           const docRef = db.collection("animals").doc();
 
           // Get the combined tags from the cloud vision API and the product tags provided
           // let combinedTags = arrayUnique(productTags.concat(imageTags));
 
-          // Set the properties of the product
-          await docRef.set({
-            // name,
-            // description,
-            // price,
-            // quantity,
-            image_link: imageUrl,
-            // models: {
-            //   glb_link: glbLink,
-            //   usdz_link: usdzLink,
-            // },
-            imageTags,
-          });
+          const animal = {
+            name: String(taggedAnimals[0]).toUpperCase(),
+            imageUrl,
+            username,
+            taggedAnimals,
+            species: "",
+            description: "",
+            facts: [],
+            score: 1,
+          };
 
+          //{
+          // description,
+          // price,
+          // quantity,
+          // models: {
+          //   glb_link: glbLink,
+          //   usdz_link: usdzLink,
+          // },
+          // }
+
+          // Set the properties of the animal
+          await docRef.set(animal);
           res.json({
             id: docRef.id,
-            // name,
-            // description,
-            // price,
-            // quantity,
-            image_link: imageUrl,
-            // models: {
-            //   glb_link: glbLink,
-            //   usdz_link: usdzLink,
-            // },
-            imageTags,
+            ...animal,
           });
         } else {
           res.status(500).send("Unable to get image tags");

@@ -1,11 +1,16 @@
 /* eslint-disable require-jsdoc */
-/* eslint-disable require-jsdoc */
 class Animal {
-  constructor(id, name, imageLink, description) {
+  constructor(id, name, imageUrl, username, taggedAnimals) {
     this.id = id;
     this.name = name;
-    this.imageLink = imageLink;
-    this.description = description;
+    this.imageUrl = imageUrl;
+    this.username = username;
+    this.taggedAnimals = taggedAnimals;
+    this.species = "";
+    this.description = "";
+    this.facts = [];
+    // Animal gets default score of 1 on upload
+    this.score = 1;
   }
 }
 

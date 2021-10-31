@@ -1,7 +1,7 @@
 import "@google/model-viewer";
 import { Typography } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
@@ -9,7 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import PropTypes from "prop-types";
 import React from "react";
-import Logo from "../assets/logo512.png";
+// import Logo from "../assets/logo512.png";
 import { getAnimal } from "../services/searchQuery";
 import "./ARView.css";
 import Map from "./Map";
@@ -68,27 +68,15 @@ ElevationScroll.propTypes = {
 };
 
 const location = {
-  address: "Google Office",
-  lat: 51.53336432624241,
-  lng: -0.12600320186901312,
+  address: "KwaZulu-Natal Beach",
+  lat: -29.621299164688523,
+  lng: 31.151602089572492,
 };
 
 function Animal(props) {
   const id = props.match.params.animalId;
   const [fetched, setFetched] = React.useState(false);
   const [animal, setAnimal] = React.useState({});
-
-  const names = ["Jaafar Rammal", "Jennifer Smith"];
-
-  const stories = [
-    "Hi, my name is Jaafar! I'm a 21 year old student from London and really enjoy crafting things in my spare time. I started this business 6 months ago with the aim of sharing my passion with others. I appreciate all the support!",
-    "Hello everyone, I'm Jennifer. I'm 30 years old and recently got into crafting - I began my business a year ago but because of the pandemic I've found it hard to get customers. My products are sustainable and eco-friendly, so you're also looking out for the environment. This platform really helps me to bring my products to you, so have a look around and see what takes your fancy!",
-  ];
-
-  const images = [
-    "https://avatars1.githubusercontent.com/u/45538723?s=400&u=542948751a05f4b1039828fe53f99a1a5e15468f&v=4",
-    "https://cdn.discordapp.com/attachments/817730471173029889/818315139907452958/unknown.png",
-  ];
 
   React.useEffect(() => {
     if (!fetched) {
@@ -121,36 +109,55 @@ function Animal(props) {
       {/* Main view view */}
       {fetched && (
         <div style={{ marginTop: "50px", padding: "80px 20px" }}>
-          <p>Got animal ID: {props.match.params.animalId}</p>
+          {/* <p>Got animal ID: {props.match.params.animalId}</p> */}
           <Grid container spacing={3}>
             {/* Product details */}
             <Grid item md>
               <Card className="details-wrapper">
                 <CardContent>
-                  <h1>Animal details</h1>
+                  <h1>{animal.name}</h1>
                   <br />
-                  {/* <h2>{product.name}</h2>
-                   <br />
-                  <p>{product.description}</p>
+                  <div
+                    style={{
+                      height: "200px",
+                      width: "100%",
+                      padding: "10px 0px",
+                    }}
+                  >
+                    <img
+                      src={animal.imageUrl}
+                      style={{
+                        maxHeight: "150px",
+                        width: "100%",
+                        objectFit: "contain",
+                      }}
+                      alt="robot"
+                    ></img>
+                  </div>
+                  <p>{animal.description}</p>
                   <br />
                   <p>
-                    <b>Seller: </b>
-                    {names[product.quantity % 2]}
+                    <b>Tagged animals: </b>
+                    {animal.taggedAnimals.toString()}
                   </p>
                   <br />
+                  {animal.facts && (
+                    <div>
+                      <p>
+                        <b>Fun facts</b>
+                      </p>
+                      {animal.facts.map((f, i) => (
+                        <p>
+                          {i}: {f}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                   <p>
-                    <b>Tags: </b>
-                    {product.product_tags.toString()}
+                    <b>Score:</b> {animal.score}
                   </p>
                   <br />
-                  <p>
-                    <b>Quantity: </b>
-                    {product.quantity}
-                  </p>
-                  <br />
-                  <p>
-                    <b>Price: </b>£{product.price}
-                  </p> */}
+                  <p>Uploaded by {animal.username}</p>
                   <br />
                   {/* <Button
                     className="primary"
@@ -177,31 +184,21 @@ function Animal(props) {
             <Grid item md>
               <Card className="details-wrapper ">
                 <CardContent>
-                  {/* <h3>Seller story</h3>
+                  <h3>Habitat and Location Info</h3>
                   <br />
                   <div style={{ width: "100%", textAlign: "center" }}>
-                    <img
-                      src={images[product.quantity % 2]}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "fill",
-                        borderRadius: "50%",
-                        padding: "0px 5%",
-                      }}
-                      alt=""
-                    />
+                    [ANIMAL HEATMAP]
                   </div>
                   <br />
-                  <div style={{ textAlign: "justify" }}>
-                    <br />
-                    {stories[product.quantity % 2]}
-                  </div>
                   <br />
-                  <h3>Seller location</h3> */}
+                  <h3>Upload Location</h3>
                   <br />
-                  <Map location={location} zoomLevel={17} />
-                  <Button
+                  <p>Location: {location.address}</p>
+                  <br />
+                  <p>Latitude/longitude: {`${location.lat}/${location.lng}`}</p>
+                  <br />
+                  <Map location={location} zoomLevel={20} />
+                  {/* <Button
                     className="primary"
                     onClick={() =>
                       window.open(
@@ -210,7 +207,7 @@ function Animal(props) {
                     }
                   >
                     Open in Google Maps
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             </Grid>
