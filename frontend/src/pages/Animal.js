@@ -1,18 +1,15 @@
+import React from "react";
 import "@google/model-viewer";
-import { Button } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar";
-// import Button from "@material-ui/core/Button";
+
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
-import Toolbar from "@material-ui/core/Toolbar";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import PropTypes from "prop-types";
-import React from "react";
+
 import { getAnimal } from "../services/searchQuery";
 import "./ARView.css";
 import Map from "./Map";
-import { Link } from "react-router-dom";
+
+import CustomAppBar from "./CustomAppBar";
 
 // const ARView = (props) => {
 //   return (
@@ -42,31 +39,6 @@ import { Link } from "react-router-dom";
 //   );
 // };
 
-function ElevationScroll(props) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-    target: window ? window() : undefined,
-  });
-
-  return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
-  });
-}
-
-ElevationScroll.propTypes = {
-  children: PropTypes.element.isRequired,
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
-
 const location = {
   address: "KwaZulu-Natal Beach",
   lat: -29.621299164688523,
@@ -93,21 +65,7 @@ function Animal(props) {
 
   return (
     <div>
-      {/* App bar */}
-      <ElevationScroll {...props}>
-        <AppBar position="fixed" style={{ background: "#35d219" }}>
-          <Toolbar>
-            {/* <img
-              src={Logo}
-              alt="logo"
-              style={{ maxHeight: "30px", paddingRight: "15px" }}
-            /> */}
-            <Button component={Link} to="/">
-              Animal Explore
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </ElevationScroll>
+      <CustomAppBar />
       {/* Main view view */}
       {fetched && (
         <div style={{ marginTop: "50px", padding: "80px 20px" }}>
