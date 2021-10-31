@@ -1,5 +1,5 @@
 import "@google/model-viewer";
-import { Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 // import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -12,6 +12,7 @@ import React from "react";
 import { getAnimal } from "../services/searchQuery";
 import "./ARView.css";
 import Map from "./Map";
+import { Link } from "react-router-dom";
 
 // const ARView = (props) => {
 //   return (
@@ -101,7 +102,9 @@ function Animal(props) {
               alt="logo"
               style={{ maxHeight: "30px", paddingRight: "15px" }}
             /> */}
-            <Typography component="h3">Animal Explore</Typography>
+            <Button component={Link} to="/">
+              Animal Explore
+            </Button>
           </Toolbar>
         </AppBar>
       </ElevationScroll>

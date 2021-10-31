@@ -15,6 +15,7 @@ import BarChartIcon from "@material-ui/icons/BarChart";
 import PropTypes from "prop-types";
 import React from "react";
 import "./AddAnimal.css";
+import { Link } from "react-router-dom";
 
 // https://us-central1-bgn-hack21-7005.cloudfunctions.net/
 // http://localhost:5001/bgn-hack21-7005/us-central1/
@@ -165,7 +166,9 @@ function AddAnimal(props) {
               alt="logo"
               style={{ maxHeight: "30px", paddingRight: "15px" }}
             /> */}
-            <Typography component="h3">Animal Explore</Typography>
+            <Button component={Link} to="/">
+              Animal Explore
+            </Button>
           </Toolbar>
         </AppBar>
       </ElevationScroll>

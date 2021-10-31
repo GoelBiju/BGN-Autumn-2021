@@ -18,6 +18,7 @@ import {
 import AnimalCard from "./Card";
 import "./Animals.css";
 import { useStyles } from "./Styles";
+import { Link } from "react-router-dom";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -46,7 +47,7 @@ ElevationScroll.propTypes = {
 
 function Animals(props) {
   const classes = useStyles();
-  const searchRef = React.useRef();
+  // const searchRef = React.useRef();
 
   const [fetched, setFetched] = React.useState(false);
   const [animals, setAnimals] = React.useState([]);
@@ -97,7 +98,9 @@ function Animals(props) {
               alt="logo"
               style={{ maxHeight: "30px", paddingRight: "15px" }}
             /> */}
-            <Typography component="h3">Animal Explore</Typography>
+            <Button component={Link} to="/">
+              Animal Explore
+            </Button>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
