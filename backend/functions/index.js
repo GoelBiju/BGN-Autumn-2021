@@ -11,6 +11,10 @@ const fileParser = require("express-multipart-file-parser");
 
 const { getImageTags } = require("./utils/cloud");
 
+// Import Tensorflow.js models
+const mobilenet = require("@tensorflow-models/mobilenet");
+console.log("MobileNet version:", mobilenet.version);
+
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   storageBucket: "bgn-hack21-7005.appspot.com", // Specify the storage bucket name
