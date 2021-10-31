@@ -9,7 +9,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import PropTypes from "prop-types";
 import React from "react";
-// import Logo from "../assets/logo512.png";
 import { getAnimal } from "../services/searchQuery";
 import "./ARView.css";
 import Map from "./Map";

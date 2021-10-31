@@ -10,7 +10,6 @@ import PhotoAlbum from "@material-ui/icons/PhotoAlbum";
 import SearchIcon from "@material-ui/icons/Search";
 import PropTypes from "prop-types";
 import React from "react";
-// import Logo from "../assets/logo512.png";
 import {
   getAllAnimals,
   searchByImage,

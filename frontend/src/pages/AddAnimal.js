@@ -11,17 +11,14 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import AddIcon from "@material-ui/icons/Add";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
-import BarChartIcon from '@material-ui/icons/BarChart';
+import BarChartIcon from "@material-ui/icons/BarChart";
 import PropTypes from "prop-types";
 import React from "react";
-import { Link } from "react-router-dom";
-import Logo from "../assets/logo512.png";
 import "./AddAnimal.css";
-
 
 // https://us-central1-bgn-hack21-7005.cloudfunctions.net/
 // http://localhost:5001/bgn-hack21-7005/us-central1/
-const API_BASE="https://us-central1-bgn-hack21-7005.cloudfunctions.net/"
+const API_BASE = "https://us-central1-bgn-hack21-7005.cloudfunctions.net/";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -50,7 +47,7 @@ ElevationScroll.propTypes = {
 
 function AddAnimal(props) {
   // Files to upload
-  const [animalName, setAnimalName] = React.useState("")
+  const [animalName, setAnimalName] = React.useState("");
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [imageFile, setImageFile] = React.useState(null);
   const [modelFiles, setModelFiles] = React.useState({
@@ -83,7 +80,7 @@ function AddAnimal(props) {
       const file = event.target.files[0];
       setImageFile(file);
       setSelectedFile(URL.createObjectURL(file));
-      setAnimalName(file)
+      setAnimalName(file);
     }
   };
 
@@ -99,13 +96,10 @@ function AddAnimal(props) {
     }
     // TODO: Ensure POST request works...
     // Send a POST fetch request with the data
-    fetch(
-      `${API_BASE}/app/api/predict`,
-      {
-        method: "POST",
-        body: productData,
-      }
-    )
+    fetch(`${API_BASE}/app/api/predict`, {
+      method: "POST",
+      body: productData,
+    })
       .then((res) => {
         console.log(res);
         setLoading(false);
@@ -124,7 +118,7 @@ function AddAnimal(props) {
     // Create the form data and send it
     const animalData = new FormData();
     animalData.append("username", userRef.current.value);
-    animalData.append("animalName", nameRef.current.value); //TODO: Check this value in DB. 
+    animalData.append("animalName", nameRef.current.value); //TODO: Check this value in DB.
     // productData.append("description", descriptionRef.current.value);
     // productData.append("price", priceRef.current.value);
     // productData.append("quantity", quantityRef.current.value);
@@ -142,13 +136,10 @@ function AddAnimal(props) {
 
     // TODO: Ensure POST request works...
     // Send a POST fetch request with the data
-    fetch(
-      `${API_BASE}/app/api/animals`,
-      {
-        method: "POST",
-        body: animalData,
-      }
-    )
+    fetch(`${API_BASE}/app/api/animals`, {
+      method: "POST",
+      body: animalData,
+    })
       .then((res) => {
         console.log(res);
         setLoading(false);
@@ -235,17 +226,24 @@ function AddAnimal(props) {
               )}
               {selectedFile && (
                 <>
-                <img style={{ "maxWidth": "100%", "marginLeft": "auto", "marginRight": "auto"}} src={selectedFile} />
-                <Button
-                variant="outlined"
-                className="primary"
-                startIcon={<BarChartIcon />}
-                component="span"
-                onClick={handlePredict}
-              >
-                Classify
-              </Button>
-              </>
+                  <img
+                    style={{
+                      maxWidth: "100%",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }}
+                    src={selectedFile}
+                  />
+                  <Button
+                    variant="outlined"
+                    className="primary"
+                    startIcon={<BarChartIcon />}
+                    component="span"
+                    onClick={handlePredict}
+                  >
+                    Classify
+                  </Button>
+                </>
               )}
             </Grid>
 
