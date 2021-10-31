@@ -14,7 +14,8 @@ import CustomAppBar from "./CustomAppBar";
 
 // https://us-central1-bgn-hack21-7005.cloudfunctions.net/
 // http://localhost:5001/bgn-hack21-7005/us-central1/
-const API_BASE = "https://us-central1-bgn-hack21-7005.cloudfunctions.net";
+// const API_BASE = "https://us-central1-bgn-hack21-7005.cloudfunctions.net";
+const API_BASE = "http://localhost:5001/bgn-hack21-7005/us-central1";
 
 function AddAnimal() {
   // Files to upload
@@ -69,11 +70,17 @@ function AddAnimal() {
     // Send a POST fetch request with the data
     fetch(`${API_BASE}/app/api/predict`, {
       method: "POST",
+      // headers: {
+      //   Accept: "application/json, text/plain, */*",
+      //   "Content-Type": "application/json",
+      // },
       body: animalData,
     })
-      .then((res) => {
-        console.log(res);
-        setAnimalName(res.imageTags[0]);
+      .then(async (res) => {
+        const data = await res.json();
+
+        console.log("Response: ", data);
+        setAnimalName(data.animalName);
         setLoading(false);
         alert("Predicted animal");
       })
@@ -114,7 +121,6 @@ function AddAnimal() {
       body: animalData,
     })
       .then((res) => {
-        console.log(res);
         setLoading(false);
         alert("Added animal");
 
