@@ -1,10 +1,12 @@
 # BGN Hackathon - Autumn 2021 (Team Meta)
 
-## Introducing [product name]
+## Introducing AniXplore
 
 ## Features
 
 ## Tech stack
+
+React, NodeJs, Firebase (Firestore, Storage on GCP), Google Cloud Vision API, Google Maps API
 
 ## Possible extensions
 

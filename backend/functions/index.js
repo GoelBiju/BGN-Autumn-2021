@@ -116,12 +116,11 @@ app.post("/api/predict", async (req, res) => {
       if (imageUrl) {
         const taggedAnimals = await getImageTags(imageUrl);
 
-        if (imageTags) {
+        if (taggedAnimals) {
           // Get the combined tags from the cloud vision API and the product tags provided
           // let combinedTags = arrayUnique(productTags.concat(imageTags));
 
           res.json({
-            image_link: imageUrl,
             animalName: taggedAnimals[0],
           });
         } else {

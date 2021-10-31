@@ -1,51 +1,17 @@
+import React from "react";
+
 import { CircularProgress } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar";
+
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import InputBase from "@material-ui/core/InputBase";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import PhotoAlbum from "@material-ui/icons/PhotoAlbum";
-import SearchIcon from "@material-ui/icons/Search";
-import PropTypes from "prop-types";
-import React from "react";
-import {
-  getAllAnimals,
-  searchByImage,
-  searchByWord,
-} from "../services/searchQuery";
+
+import { getAllAnimals } from "../services/searchQuery";
 import AnimalCard from "./Card";
 import "./Animals.css";
 import { useStyles } from "./Styles";
-import { Link } from "react-router-dom";
+import CustomAppBar from "./CustomAppBar";
 
-function ElevationScroll(props) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-    target: window ? window() : undefined,
-  });
-
-  return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
-  });
-}
-
-ElevationScroll.propTypes = {
-  children: PropTypes.element.isRequired,
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
-
-function Animals(props) {
+function Animals() {
   const classes = useStyles();
   // const searchRef = React.useRef();
 
@@ -90,37 +56,7 @@ function Animals(props) {
 
   return (
     <>
-      <ElevationScroll {...props}>
-        <AppBar position="fixed" style={{ background: "#35d219" }}>
-          <Toolbar>
-            <Typography component="h3">Animal Explore</Typography>
-            <div>
-              <Button
-              className="primary"
-              variant="contained"
-              style={{ marginBottom: "13px", padding: "6px 16px" }}
-              onClick={() => {
-                const link = window.location.origin + "/leadership";
-                console.log(link);
-                window.location = link;
-              }}
-              >
-              Leadership Board
-              </Button>
-            </div>
-
-=======
-            {/* <img
-              src={Logo}
-              alt="logo"
-              style={{ maxHeight: "30px", paddingRight: "15px" }}
-            /> */}
-            <Button component={Link} to="/">
-              Animal Explore
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </ElevationScroll>
+      <CustomAppBar />
       {/* Decoration container like Firebase one */}
       <div className="decoration-div" style={{ marginBottom: "-80px" }}>
         <div className="inner-decoration">

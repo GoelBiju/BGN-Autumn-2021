@@ -4,49 +4,19 @@ import {
   Typography,
   CircularProgress,
 } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
-import Toolbar from "@material-ui/core/Toolbar";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import AddIcon from "@material-ui/icons/Add";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import BarChartIcon from "@material-ui/icons/BarChart";
-import PropTypes from "prop-types";
 import React from "react";
 import "./AddAnimal.css";
-import { Link } from "react-router-dom";
+import CustomAppBar from "./CustomAppBar";
 
 // https://us-central1-bgn-hack21-7005.cloudfunctions.net/
 // http://localhost:5001/bgn-hack21-7005/us-central1/
 const API_BASE = "https://us-central1-bgn-hack21-7005.cloudfunctions.net";
 
-function ElevationScroll(props) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-    target: window ? window() : undefined,
-  });
-
-  return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
-  });
-}
-
-ElevationScroll.propTypes = {
-  children: PropTypes.element.isRequired,
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
-
-function AddAnimal(props) {
+function AddAnimal() {
   // Files to upload
   const [animalName, setAnimalName] = React.useState("");
   const [selectedFile, setSelectedFile] = React.useState(null);
@@ -160,20 +130,7 @@ function AddAnimal(props) {
 
   return (
     <>
-      <ElevationScroll {...props}>
-        <AppBar position="fixed" style={{ background: "#35d219" }}>
-          <Toolbar>
-            {/* <img
-              src={Logo}
-              alt="logo"
-              style={{ maxHeight: "30px", paddingRight: "15px" }}
-            /> */}
-            <Button component={Link} to="/">
-              Animal Explore
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </ElevationScroll>
+      <CustomAppBar />
       <div
         className="decoration-div"
         style={{ textAlign: "center", marginBottom: "-250px" }}
@@ -237,6 +194,7 @@ function AddAnimal(props) {
                       marginLeft: "auto",
                       marginRight: "auto",
                     }}
+                    alt=""
                     src={selectedFile}
                   />
                   <Button
