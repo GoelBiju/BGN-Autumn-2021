@@ -212,8 +212,8 @@ app.post("/api/animals", async (req, res) => {
             coords,
             predictions,
             taggedAnimals,
-            description: animalName === "DOG" ? dogDesc : "",
-            facts: animalName === "DOG" ? dogFacts : [],
+            description: animalName.toLowerCase() === "dog" ? dogDesc : "",
+            facts: animalName.toLowerCase() === "dog" ? dogFacts : [],
             score: 1,
             dateTime,
           };

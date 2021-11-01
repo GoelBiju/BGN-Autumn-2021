@@ -40,7 +40,7 @@ function AnimalCard(props) {
         >
           {animal.name}
         </Typography>
-        <Typography>Exact Name:</Typography>
+        <Typography>{animal.exactName}</Typography>
         <div style={{ height: "200px", width: "100%", padding: "10px 0px" }}>
           <img
             src={animal.imageUrl}
@@ -48,6 +48,7 @@ function AnimalCard(props) {
             alt=""
           ></img>
         </div>
+        <Typography>Community score: {animal.score}</Typography>
         <Typography>
           <i>Uploaded by</i>: {animal.username}
         </Typography>
@@ -59,7 +60,7 @@ function AnimalCard(props) {
           variant="contained"
           className="primary"
         >
-          Learn
+          Learn More
         </Button>
       </CardActions>
     </Card>
