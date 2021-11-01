@@ -17,7 +17,7 @@ function getImageTags(imageData) {
         const [result] = results;
         const objects = result.localizedObjectAnnotations;
 
-        console.log("Results: ", result);
+        // console.log("Results: ", result);
         console.log(objects);
 
         objects.forEach((object) => {

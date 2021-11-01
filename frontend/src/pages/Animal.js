@@ -4,6 +4,7 @@ import "@google/model-viewer";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
 import { getAnimal } from "../services/searchQuery";
 import "./ARView.css";
@@ -39,12 +40,6 @@ import CustomAppBar from "./CustomAppBar";
 //   );
 // };
 
-const location = {
-  address: "KwaZulu-Natal Beach",
-  lat: -29.621299164688523,
-  lng: 31.151602089572492,
-};
-
 function Animal(props) {
   const id = props.match.params.animalId;
   const [fetched, setFetched] = React.useState(false);
@@ -75,8 +70,18 @@ function Animal(props) {
             <Grid item md>
               <Card className="details-wrapper">
                 <CardContent>
-                  <h1>{animal.name}</h1>
+                  <h1>{animal.exactName.toUpperCase()}</h1>
                   <br />
+                  <p>
+                    <b>Type:</b> {animal.name}
+                  </p>
+                  <br />
+                  <p>
+                    <b>Tagged animal types: </b>
+                    {animal.taggedAnimals.toString()}
+                  </p>
+                  <br />
+
                   <div
                     style={{
                       height: "200px",
@@ -94,30 +99,53 @@ function Animal(props) {
                       alt="robot"
                     ></img>
                   </div>
-                  <p>{animal.description}</p>
-                  <br />
                   <p>
-                    <b>Tagged animals: </b>
-                    {animal.taggedAnimals.toString()}
+                    <b>Description:</b>
+                    <br />
+                    {animal.description}
                   </p>
                   <br />
-                  {animal.facts && (
+
+                  {animal.facts.length > 0 && (
                     <div>
                       <p>
-                        <b>Fun facts</b>
+                        <b>Fun facts:</b>
                       </p>
                       {animal.facts.map((f, i) => (
                         <p>
-                          {i}: {f}
+                          <b>{i + 1}.</b> {f}
                         </p>
                       ))}
                     </div>
                   )}
+                  <br />
+                  <br />
                   <p>
-                    <b>Score:</b> {animal.score}
+                    <b>Community Score:</b> {animal.score}
                   </p>
                   <br />
-                  <p>Uploaded by {animal.username}</p>
+                  <p>
+                    <i>
+                      Upvote this photo if you agree if it is correctly
+                      identified and earn a point yourself!
+                    </i>
+                  </p>
+                  <br />
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={() => {
+                      // Increase score of the photo
+                      console.log(animal.score + 1);
+                    }}
+                  >
+                    Upvote
+                  </Button>
+                  <br />
+                  <br />
+                  <p>
+                    Snapped by <b>{animal.username}</b> on {animal.dateTime}
+                  </p>
                   <br />
                   {/* <Button
                     className="primary"
@@ -144,20 +172,32 @@ function Animal(props) {
             <Grid item md>
               <Card className="details-wrapper ">
                 <CardContent>
-                  <h3>Habitat and Location Info</h3>
-                  <br />
-                  <div style={{ width: "100%", textAlign: "center" }}>
+                  {/* <h3>Habitat and Location Info</h3>
+                  <br /> */}
+                  {/* <div style={{ width: "100%", textAlign: "center" }}>
                     [ANIMAL HEATMAP]
-                  </div>
+                  </div> */}
                   <br />
                   <br />
                   <h3>Upload Location</h3>
                   <br />
-                  <p>Location: {location.address}</p>
+                  <p>
+                    <b>Location:</b> {animal.location}
+                  </p>
                   <br />
-                  <p>Latitude/longitude: {`${location.lat}/${location.lng}`}</p>
+                  <p>
+                    <b>Latitude/longitude:</b>{" "}
+                    {`${animal.coords.lat}/${animal.coords.lng}`}
+                  </p>
                   <br />
-                  <Map location={location} zoomLevel={20} />
+                  <Map
+                    location={{
+                      address: animal.location,
+                      lat: animal.coords.lat,
+                      lng: animal.coords.lng,
+                    }}
+                    zoomLevel={20}
+                  />
                   {/* <Button
                     className="primary"
                     onClick={() =>

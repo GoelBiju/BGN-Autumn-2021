@@ -12,34 +12,34 @@ import React from "react";
 import "./AddAnimal.css";
 import CustomAppBar from "./CustomAppBar";
 
-// https://us-central1-bgn-hack21-7005.cloudfunctions.net/
-// http://localhost:5001/bgn-hack21-7005/us-central1/
-// const API_BASE = "https://us-central1-bgn-hack21-7005.cloudfunctions.net";
-const API_BASE = "http://localhost:5001/bgn-hack21-7005/us-central1";
+const API_BASE = "https://us-central1-bgn-hack21-7005.cloudfunctions.net";
+// const API_BASE = "http://localhost:5001/bgn-hack21-7005/us-central1";
 
 function AddAnimal() {
   // Files to upload
   const [animalName, setAnimalName] = React.useState("");
+  const [exactName, setExactName] = React.useState("");
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [imageFile, setImageFile] = React.useState(null);
-  // const [modelFiles, setModelFiles] = React.useState({
-  //   glb: null,
-  //   usdz: null,
-  // });
+  const [predictions, setPredictions] = React.useState(null);
+  const [coords, setCoords] = React.useState(null);
 
   const userRef = React.useRef();
-  const nameRef = React.useRef();
   const locationRef = React.useRef();
-  // const descriptionRef = React.useRef();
-  // const priceRef = React.useRef();
-  // const quantityRef = React.useRef();
-  // const tagsRef = React.useRef();
 
   const [loading, setLoading] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   console.log("Current files: ", imageFile, modelFiles);
-  // }, [imageFile, modelFiles]);
+  React.useEffect(() => {
+    if (!coords)
+      navigator.geolocation.getCurrentPosition((p) => {
+        console.log("Latitude is :", p.coords.latitude);
+        console.log("Longitude is :", p.coords.longitude);
+        setCoords({
+          lat: p.coords.latitude,
+          lng: p.coords.longitude,
+        });
+      });
+  }, [coords]);
 
   // Handle file change
   const handleFileChange = (event, type) => {
@@ -52,7 +52,6 @@ function AddAnimal() {
       const file = event.target.files[0];
       setImageFile(file);
       setSelectedFile(URL.createObjectURL(file));
-      // setAnimalName(file);
     }
   };
 
@@ -66,21 +65,20 @@ function AddAnimal() {
     if (imageFile) {
       animalData.append("imageFile", imageFile);
     }
-    // TODO: Ensure POST request works...
+
     // Send a POST fetch request with the data
     fetch(`${API_BASE}/app/api/predict`, {
       method: "POST",
-      // headers: {
-      //   Accept: "application/json, text/plain, */*",
-      //   "Content-Type": "application/json",
-      // },
       body: animalData,
     })
       .then(async (res) => {
         const data = await res.json();
+        console.log("Best prediction: ", data.predictions[0].className);
 
         console.log("Response: ", data);
-        setAnimalName(data.animalName);
+        setAnimalName(String(data.animalName).toUpperCase());
+        setPredictions(data.predictions);
+        setExactName(String(data.predictions[0].className).toLowerCase());
         setLoading(false);
         alert("Predicted animal");
       })
@@ -97,12 +95,12 @@ function AddAnimal() {
     // Create the form data and send it
     const animalData = new FormData();
     animalData.append("username", userRef.current.value);
-    animalData.append("animalName", animalName); //TODO: Check this value in DB.
+    animalData.append("animalName", animalName);
+    animalData.append("exactName", exactName);
+    animalData.append("predictions", JSON.stringify(predictions));
 
-    // productData.append("description", descriptionRef.current.value);
-    // productData.append("price", priceRef.current.value);
-    // productData.append("quantity", quantityRef.current.value);
-    // productData.append("tags", tagsRef.current.value);
+    animalData.append("location", locationRef.current.value);
+    animalData.append("coords", JSON.stringify(coords));
 
     // Display the key/value pairs
     for (var pair of animalData.entries()) {
@@ -113,18 +111,17 @@ function AddAnimal() {
     if (imageFile) {
       animalData.append("imageFile", imageFile);
     }
-
-    // TODO: Ensure POST request works...
     // Send a POST fetch request with the data
     fetch(`${API_BASE}/app/api/animals`, {
       method: "POST",
       body: animalData,
     })
-      .then((res) => {
+      .then(async (res) => {
         setLoading(false);
         alert("Added animal");
-
-        const link = window.location.origin + "/";
+        const data = await res.json();
+        console.log(data);
+        const link = window.location.origin + "/animals/" + data.id;
         console.log(link);
         window.location = link;
       })
@@ -142,7 +139,6 @@ function AddAnimal() {
         style={{ textAlign: "center", marginBottom: "-250px" }}
       >
         <div className="inner-decoration">
-          <p style={{ fontSize: "x-large" }}>Upload your animal!</p>
           <br />
           {loading && <CircularProgress style={{ color: "#1976d2" }} />}
         </div>
@@ -156,20 +152,9 @@ function AddAnimal() {
             alignItems="center"
             spacing={3}
           >
-            <Typography>Enter your username:</Typography>
-            <Grid item xs={12}>
-              <TextField
-                label="Username"
-                required
-                id="user-name"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                inputRef={userRef}
-              />
-            </Grid>
-
-            <Typography>Upload an image of your product:</Typography>
+            <Typography>
+              Take or upload an image of your animal to begin identification!
+            </Typography>
             <Grid item xs={12}>
               {!selectedFile && (
                 <>
@@ -187,7 +172,7 @@ function AddAnimal() {
                       startIcon={<PhotoCamera />}
                       component="span"
                     >
-                      Upload Image
+                      Capture/Upload Image
                     </Button>
                   </label>
                 </>
@@ -216,6 +201,10 @@ function AddAnimal() {
               )}
             </Grid>
 
+            <Typography>
+              We will predict the type of animal (feel free to edit this if it
+              is incorrect):
+            </Typography>
             <Grid item xs={12}>
               <TextField
                 label="Animal Name"
@@ -224,12 +213,38 @@ function AddAnimal() {
                 fullWidth
                 margin="normal"
                 variant="outlined"
-                inputRef={nameRef}
                 value={animalName}
                 onChange={(event) => setAnimalName(event.target.value)}
               />
             </Grid>
 
+            {!predictions ? (
+              <Typography>
+                We want to be as accurate as possible, so let us guess exact
+                species:
+              </Typography>
+            ) : (
+              <p>
+                We're{" "}
+                <b>{String(predictions[0].probability * 100).split(".")[0]}%</b>{" "}
+                sure about this animal. If this is wrong tell us by changing it
+                below!
+              </p>
+            )}
+            <Grid item xs={12}>
+              <TextField
+                label="Exact Name"
+                required
+                id="animal-exact-name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                value={exactName}
+                onChange={(event) => setExactName(event.target.value)}
+              />
+            </Grid>
+
+            <Typography>Where did you spot this animal?</Typography>
             <Grid item xs={12}>
               <TextField
                 label="Animal Location"
@@ -242,15 +257,28 @@ function AddAnimal() {
               />
             </Grid>
 
+            <Typography>Enter your username to gain your point:</Typography>
+            <Grid item xs={12}>
+              <TextField
+                label="Username"
+                required
+                id="user-name"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                inputRef={userRef}
+              />
+            </Grid>
+
             <Grid item xs={12}>
               <Button
-                id="add-product"
+                id="add-animal"
                 variant="contained"
                 className="secondary"
                 startIcon={<AddIcon />}
                 onClick={handleAdd}
               >
-                Submit
+                Submit Animal
               </Button>
             </Grid>
           </Grid>

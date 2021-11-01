@@ -1,6 +1,6 @@
 # BGN Hackathon - Autumn 2021 (Team Meta)
 
-## Introducing AniXplore
+## Introducing AniMeta
 
 ## Features
 

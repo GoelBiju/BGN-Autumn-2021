@@ -40,22 +40,17 @@ function AnimalCard(props) {
         >
           {animal.name}
         </Typography>
-        {/* <Typography variant="h5" component="h2">
-          {product.name}
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          {names[product.quantity % 2]}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {product.description}
-        </Typography> */}
+        <Typography>Exact Name:</Typography>
         <div style={{ height: "200px", width: "100%", padding: "10px 0px" }}>
           <img
             src={animal.imageUrl}
             style={{ maxHeight: "150px", width: "100%", objectFit: "contain" }}
-            alt="robot"
+            alt=""
           ></img>
         </div>
+        <Typography>
+          <i>Uploaded by</i>: {animal.username}
+        </Typography>
       </CardContent>
       <CardActions>
         <Button
@@ -64,11 +59,8 @@ function AnimalCard(props) {
           variant="contained"
           className="primary"
         >
-          Explore
+          Learn
         </Button>
-        {/* <div style={{ textAlign: "right", width: "40%" }}>
-          <h3>£{animal.price}</h3>
-        </div>*/}
       </CardActions>
     </Card>
   );
